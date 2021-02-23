@@ -61,6 +61,18 @@ model = dlt.TranslationModel("facebook/mbart-large-50-one-to-many-mmt")
 ```
 Note that the available languages will change if you do this, so you will not be able to leverage `dlt.lang` or `dlt.utils`.
 
+### Breaking down into sentences
+
+It is not recommended to use extremely long texts as it takes more time to process. Instead, you can try to break them down into sentences with the help of `nltk`. First install the library with `pip install nltk`, then run:
+```python
+import nltk
+
+nltk.load("punkt")
+
+text = "Mr. Smith went to his favorite cafe. There, he met his friend Dr. Doe."
+sents = nltk.tokenize.sent_tokenize(text, "english")  # don't use dlt.lang.ENGLISH
+" ".join(model.translate(sents, source=dlt.lang.FRENCH, target=dlt.lang.FRENCH))
+```
 
 
 ## Advanced
