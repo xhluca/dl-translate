@@ -71,11 +71,13 @@ nltk.load("punkt")
 
 text = "Mr. Smith went to his favorite cafe. There, he met his friend Dr. Doe."
 sents = nltk.tokenize.sent_tokenize(text, "english")  # don't use dlt.lang.ENGLISH
-" ".join(model.translate(sents, source=dlt.lang.FRENCH, target=dlt.lang.FRENCH))
+" ".join(model.translate(sents, source=dlt.lang.ENGLISH, target=dlt.lang.FRENCH))
 ```
 
 
 ## Advanced
+
+### Interacting with underlying model and tokenizer
 
 When initializing `model`, you can pass in arguments for the underlying BART model and tokenizer (which will respectively be passed to `MBartForConditionalGeneration.from_pretrained` and `MBart50TokenizerFast.from_pretrained`):
 
@@ -94,7 +96,7 @@ model = dlt.TranslationModel(
 )
 ```
 
-You can access the underlying `transformers` model and `tokenizer`:
+You can also access the underlying `transformers` model and `tokenizer`:
 ```python
 bart = model.get_transformers_model()
 tokenizer = model.get_tokenizer()
@@ -103,6 +105,19 @@ tokenizer = model.get_tokenizer()
 See the [huggingface docs](https://huggingface.co/transformers/master/model_doc/mbart.html) for more information.
 
 
+### `bart_model.generate()` keyword arguments
+
+When running `model.translate`, you can also give a `generation_options` dictionary that is passed as keyword arguments to the underlying `bart_model.generate()` method:
+```python
+model.translate(
+    text,
+    source=dlt.lang.GERMAN,
+    target=dlt.lang.SPANISH,
+    generation_options=dict(num_beams=5, max_length=...)
+)
+```
+
+Learn more in the [huggingface docs](https://huggingface.co/transformers/main_classes/model.html#transformers.generation_utils.GenerationMixin.generate).
 
 ## Acknowledgement
 
