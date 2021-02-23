@@ -47,7 +47,7 @@ class TranslationModel:
         tokenizer_options: dict = {},
     ):
         """Instantiates a multilingual transformer model for translation.
-        model_or_path -- The path or the name of the model. Equivalent to the first argument of transformers.AutoModel.from_pretrained().
+        model_or_path -- The path or the name of the model. Equivalent to the first argument of AutoModel.from_pretrained().
         device -- "cpu", "gpu" or "auto". If it's set to "auto", will try to select a GPU when available or else fallback to CPU.
         model_options -- The keyword arguments passed to the transformer model, which is a mBART-Large for condition generation.
         tokenizer_options -- The keyword arguments passed to the tokenizer model, which is a mBART-50 Fast Tokenizer.
@@ -68,22 +68,27 @@ class TranslationModel:
         text: Union[str, List[str]],
         source: str = "French",
         target: str = "English",
+        generation_options: dict = {},
     ) -> Union[str, List[str]]:
         """Translates a string or a list of strings from a source to a target language. Tip: run `print(dlt.utils.available_languages())` to see what's available.
         text -- The content you want to translate.
         source -- The language of the original text.
         target -- The language of the translated text.
+        generation_options -- The keyword arguments passed to bart_model.generate(), where bart_model is the underlying transformers model.
         """
         source, target = _resolve_lang_codes(source, target)
 
-        self.tokenizer.src_lang = source
+        generation_options["forced_bos_token_id"] = generation_options.get(
+            "forced_bos_token_id", self.tokenizer.lang_code_to_id[target]
+        )
 
+        self.tokenizer.src_lang = source
         encoded = self.tokenizer(text, return_tensors="pt").to(self.device)
 
         generated_tokens = self.bart_model.generate(
-            **encoded,
-            forced_bos_token_id=self.tokenizer.lang_code_to_id[target],
+            **encoded, **generation_options
         ).cpu()
+
         decoded = self.tokenizer.batch_decode(
             generated_tokens, skip_special_tokens=True
         )
