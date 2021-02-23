@@ -19,5 +19,5 @@ setuptools.setup(
     ],
     packages=setuptools.find_packages(),
     python_requires='>=3.6',
-    install_requires=['transformers', 'torch', 'sentencepiece', 'protobuf']
+    install_requires=['transformers @ git+https://github.com/huggingface/transformers', 'torch', 'sentencepiece', 'protobuf']
 )
