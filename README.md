@@ -128,3 +128,17 @@ generated_tokens = model.generate(**encoded_ar, forced_bos_token_id=tokenizer.la
 tokenizer.batch_decode(generated_tokens, skip_special_tokens=True)
 # => "The Secretary-General of the United Nations says there is no military solution in Syria."
 ```
+
+With `dlt`, you can run:
+```python
+import dl_translate as dlt
+
+article_hi = "संयुक्त राष्ट्र के प्रमुख का कहना है कि सीरिया में कोई सैन्य समाधान नहीं है"
+article_ar = "الأمين العام للأمم المتحدة يقول إنه لا يوجد حل عسكري في سوريا."
+
+model = dlt.TranslationModel()
+translated_fr = model.translate(article_hi, source=dlt.lang.HINDI, target=dlt.lang.FRENCH)
+translated_en = model.translate(article_ar, source=dlt.lang.ARABIC, target=dlt.lang.ENGLISH)
+```
+
+If you are experienced with `huggingface`'s ecosystem, then you should be familiar enough with the example above that you wouldn't need this library. However, if you've never heard of huggingface or mBART, then I hope using this library will give you enough motivation to learn more about [them](https://github.com/huggingface/transformers) :)
