@@ -1,4 +1,4 @@
-_PAIRS = (
+_PAIRS_MBART50 = (
     ("Arabic", "ar_AR"),
     ("Czech", "cs_CZ"),
     ("German", "de_DE"),
@@ -55,11 +55,11 @@ _PAIRS = (
 
 auto_gen_comment = "# Auto-generated. Do not modify, use scripts/generate_lang.py instead.\n"
 
-with open("./dl_translate/lang.py", "w") as f:
+with open("./dl_translate/lang/mbart50.py", "w") as f:
     f.write(auto_gen_comment)
-    for lang, code in _PAIRS:
-        f.write(f'{lang.upper()} = "{code}"\n')
+    for lang, code in _PAIRS_MBART50:
+        f.write(f'{lang.upper()} = "{lang}"\n')
 
 with open("./dl_translate/_pairs.py", "w") as f:
     f.write(auto_gen_comment)
-    f.write(f"_PAIRS = {_PAIRS}\n")
+    f.write(f"_PAIRS_MBART50 = {_PAIRS_MBART50}\n")
