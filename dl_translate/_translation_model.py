@@ -93,6 +93,9 @@ class TranslationModel:
             generated_tokens, skip_special_tokens=True
         )
 
+        if type(text) is str and len(decoded) == 1:
+            decoded = decoded[0]
+
         return decoded
 
     def get_transformers_model(self):
