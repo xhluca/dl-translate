@@ -93,6 +93,7 @@ class TranslationModel:
             generated_tokens, skip_special_tokens=True
         )
 
+        # If text: str and decoded: List[str], then we should convert decoded to str
         if type(text) is str and len(decoded) == 1:
             decoded = decoded[0]
 
