@@ -1,6 +1,5 @@
 from ._pairs import _PAIRS_MBART50
 
-# types
 # Weights dictionaries
 __MBART50 = {
     "langs": tuple(pair[0] for pair in _PAIRS_MBART50),
