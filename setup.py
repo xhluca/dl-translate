@@ -18,6 +18,12 @@ setuptools.setup(
         "Operating System :: OS Independent",
     ],
     packages=setuptools.find_packages(),
-    python_requires='>=3.6',
-    install_requires=['transformers @ git+https://github.com/huggingface/transformers', 'torch', 'sentencepiece', 'protobuf']
+    python_requires=">=3.6",
+    install_requires=[
+        "transformers @ git+https://github.com/huggingface/transformers",
+        "torch",
+        "sentencepiece",
+        "protobuf",
+        "tqdm",
+    ],
 )
