@@ -67,8 +67,8 @@ class TranslationModel:
     def translate(
         self,
         text: Union[str, List[str]],
-        source: str = "French",
-        target: str = "English",
+        source: str,
+        target: str,
         batch_size: int=32,
         verbose: bool = False,
         generation_options: dict = dict(),
