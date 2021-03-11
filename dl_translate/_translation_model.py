@@ -70,7 +70,7 @@ class TranslationModel:
         source: str = "French",
         target: str = "English",
         batch_size: int=32,
-        verbose: bool = True,
+        verbose: bool = False,
         generation_options: dict = {},
     ) -> Union[str, List[str]]:
         """Translates a string or a list of strings from a source to a target language. Tip: run `print(dlt.utils.available_languages())` to see what's available.
@@ -82,14 +82,15 @@ class TranslationModel:
         generation_options -- The keyword arguments passed to bart_model.generate(), where bart_model is the underlying transformers model.
         """
         source, target = _resolve_lang_codes(source, target)
+        print(source, target)
         self.tokenizer.src_lang = source
 
         original_text_type = type(text)
         if original_text_type is str:
             text = [text]
 
-        batch_size = batch_size or len(text)
-
+        if batch_size is None:
+            batch_size = len(text)
 
         if "forced_bos_token_id" not in generation_options:
             generation_options["forced_bos_token_id"] = self.tokenizer.lang_code_to_id[target]
@@ -111,11 +112,11 @@ class TranslationModel:
 
                 output_text.extend(decoded)
 
-        # If text: str and decoded: List[str], then we should convert decoded to str
-        if original_text_type is str and len(decoded) == 1:
-            decoded = decoded[0]
+        # If text: str and output_text: List[str], then we should convert output_text to str
+        if original_text_type is str and len(output_text) == 1:
+            output_text = output_text[0]
 
-        return decoded
+        return output_text
 
     def get_transformers_model(self):
         """Get the mBART transformer model."""
