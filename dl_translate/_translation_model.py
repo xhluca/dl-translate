@@ -71,7 +71,7 @@ class TranslationModel:
         target: str = "English",
         batch_size: int=32,
         verbose: bool = False,
-        generation_options: dict = {},
+        generation_options: dict = dict(),
     ) -> Union[str, List[str]]:
         """Translates a string or a list of strings from a source to a target language. Tip: run `print(dlt.utils.available_languages())` to see what's available.
         text -- The content you want to translate.
@@ -82,7 +82,6 @@ class TranslationModel:
         generation_options -- The keyword arguments passed to bart_model.generate(), where bart_model is the underlying transformers model.
         """
         source, target = _resolve_lang_codes(source, target)
-        print(source, target)
         self.tokenizer.src_lang = source
 
         original_text_type = type(text)
