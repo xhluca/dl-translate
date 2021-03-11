@@ -2,6 +2,7 @@ from typing import Union, List
 
 from transformers import MBartForConditionalGeneration, MBart50TokenizerFast
 import torch
+from tqdm.auto import tqdm
 
 from . import utils
 
@@ -61,40 +62,57 @@ class TranslationModel:
         )
         self.bart_model = MBartForConditionalGeneration.from_pretrained(
             model_or_path, **model_options
-        ).to(self.device)
+        ).to(self.device).eval()
 
     def translate(
         self,
         text: Union[str, List[str]],
         source: str = "French",
         target: str = "English",
+        batch_size: int=32,
+        verbose: bool = True,
         generation_options: dict = {},
     ) -> Union[str, List[str]]:
         """Translates a string or a list of strings from a source to a target language. Tip: run `print(dlt.utils.available_languages())` to see what's available.
         text -- The content you want to translate.
         source -- The language of the original text.
         target -- The language of the translated text.
+        batch_size -- The number of samples to load at once. A smaller value is preferred if you do not have a lot of (video) RAM. If set to `None`, it will process everything at once.
+        verbose -- Whether to display the progress bar for every batch processed.
         generation_options -- The keyword arguments passed to bart_model.generate(), where bart_model is the underlying transformers model.
         """
         source, target = _resolve_lang_codes(source, target)
-
-        generation_options["forced_bos_token_id"] = generation_options.get(
-            "forced_bos_token_id", self.tokenizer.lang_code_to_id[target]
-        )
-
         self.tokenizer.src_lang = source
-        encoded = self.tokenizer(text, return_tensors="pt").to(self.device)
 
-        generated_tokens = self.bart_model.generate(
-            **encoded, **generation_options
-        ).cpu()
+        original_text_type = type(text)
+        if original_text_type is str:
+            text = [text]
 
-        decoded = self.tokenizer.batch_decode(
-            generated_tokens, skip_special_tokens=True
-        )
+        batch_size = batch_size or len(text)
+
+
+        if "forced_bos_token_id" not in generation_options:
+            generation_options["forced_bos_token_id"] = self.tokenizer.lang_code_to_id[target]
+
+        data_loader = torch.utils.data.DataLoader(text, batch_size=batch_size)
+        output_text = []
+
+        with torch.no_grad():
+            for batch in tqdm(data_loader, disable=not verbose):
+                encoded = self.tokenizer(batch, return_tensors="pt").to(self.device)
+
+                generated_tokens = self.bart_model.generate(
+                    **encoded, **generation_options
+                ).cpu()
+
+                decoded = self.tokenizer.batch_decode(
+                    generated_tokens, skip_special_tokens=True
+                )
+
+                output_text.extend(decoded)
 
         # If text: str and decoded: List[str], then we should convert decoded to str
-        if type(text) is str and len(decoded) == 1:
+        if original_text_type is str and len(decoded) == 1:
             decoded = decoded[0]
 
         return decoded
