@@ -26,4 +26,10 @@ setuptools.setup(
         "protobuf",
         "tqdm",
     ],
+    extras_require={
+        'dev': [
+            'pytest',
+            'black'
+        ]
+    }
 )
