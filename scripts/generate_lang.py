@@ -53,7 +53,9 @@ _PAIRS_MBART50 = (
     ("Slovene", "sl_SI"),
 )
 
-auto_gen_comment = "# Auto-generated. Do not modify, use scripts/generate_lang.py instead.\n"
+auto_gen_comment = (
+    "# Auto-generated. Do not modify, use scripts/generate_lang.py instead.\n"
+)
 
 with open("./dl_translate/lang/mbart50.py", "w") as f:
     f.write(auto_gen_comment)
