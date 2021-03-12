@@ -74,6 +74,18 @@ sents = nltk.tokenize.sent_tokenize(text, "english")  # don't use dlt.lang.ENGLI
 " ".join(model.translate(sents, source=dlt.lang.ENGLISH, target=dlt.lang.FRENCH))
 ```
 
+### Setting a `batch_size` and verbosity when calling `model.translate`
+
+It's possible to set a batch size (i.e. the number of elements processed at once) for the `model.translate` and whether you want to see the progress bar or not:
+
+```python
+...
+model = dlt.TranslationModel()
+model.translate(text, source, target, batch_size=32, verbose=True)
+```
+
+If you set `batch_size=None`, it will compute the entire `text` at once rather than splitting into "chunks". We recommend lowering `batch_size` if you do not have a lot of RAM or VRAM and run into CUDA memory error. Set a higher value if you are using a high-end GPU and the VRAM is not fully utilized.
+
 
 ## Advanced
 
