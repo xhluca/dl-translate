@@ -168,8 +168,4 @@ class TranslationModel:
         path -- The directory where your torch model and tokenizer are stored
         """
         load_dir = os.path.join(path, "weights.pt")
-        return cls(
-            model_or_path=load_dir,
-            tokenizer_path=path,
-            **kwargs
-        )
+        return cls(model_or_path=load_dir, tokenizer_path=path, **kwargs)
