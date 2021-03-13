@@ -26,11 +26,11 @@ text_ar = "الأمين العام للأمم المتحدة يقول إنه ل�
 model.translate(text_ar, source="Arabic", target="fr_XX")
 ```
 
-You can use `dlt.utils` to find out which languages and codes are available:
+If you want to verify whether a language is available, you can check it:
 ```python
-print(dlt.utils.available_languages())  # All languages that you can use
-print(dlt.utils.available_codes())  # Code corresponding to each language accepted
-print(dlt.utils.get_lang_code_map())  # Dictionary of lang -> code
+print(model.available_languages())  # All languages that you can use
+print(model.available_codes())  # Code corresponding to each language accepted
+print(model.get_lang_code_map())  # Dictionary of lang -> code
 ```
 
 ## Usage
@@ -87,6 +87,17 @@ model.translate(text, source, target, batch_size=32, verbose=True)
 If you set `batch_size=None`, it will compute the entire `text` at once rather than splitting into "chunks". We recommend lowering `batch_size` if you do not have a lot of RAM or VRAM and run into CUDA memory error. Set a higher value if you are using a high-end GPU and the VRAM is not fully utilized.
 
 
+### `dlt.utils` module
+
+An alternative to `model.available_languages()` is the `dlt.utils` module. You can use it to find out which languages and codes are available:
+
+```python
+print(dlt.utils.available_languages('mbart50'))  # All languages that you can use
+print(dlt.utils.available_codes('mbart50'))  # Code corresponding to each language accepted
+print(dlt.utils.get_lang_code_map('mbart50'))  # Dictionary of lang -> code
+```
+
+
 ## Advanced
 
 ### Interacting with underlying model and tokenizer
@@ -130,6 +141,7 @@ model.translate(
 ```
 
 Learn more in the [huggingface docs](https://huggingface.co/transformers/main_classes/model.html#transformers.generation_utils.GenerationMixin.generate).
+
 
 ## Acknowledgement
 
@@ -180,4 +192,4 @@ translated_fr = model.translate(article_hi, source=dlt.lang.HINDI, target=dlt.la
 translated_en = model.translate(article_ar, source=dlt.lang.ARABIC, target=dlt.lang.ENGLISH)
 ```
 
-If you are experienced with `huggingface`'s ecosystem, then you should be familiar enough with the example above that you wouldn't need this library. However, if you've never heard of huggingface or mBART, then I hope using this library will give you enough motivation to learn more about [them](https://github.com/huggingface/transformers) :)
+If you are experienced with `huggingface`'s ecosystem, then you should be familiar enough with the example above that you wouldn't need this library. However, if you've never heard of huggingface or mBART, then I hope using this library will give you enough motivation to [learn more about them](https://github.com/huggingface/transformers) :)
