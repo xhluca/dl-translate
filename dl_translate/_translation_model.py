@@ -44,8 +44,8 @@ class TranslationModel:
     def __init__(
         self,
         model_or_path: str = "facebook/mbart-large-50-many-to-many-mmt",
-        device: str = "auto",
         tokenizer_path: str = None,
+        device: str = "auto",
         model_options: dict = None,
         tokenizer_options: dict = None,
     ):
