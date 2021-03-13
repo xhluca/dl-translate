@@ -64,7 +64,7 @@ class TranslationModel:
         model_options = model_options or {}
         tokenizer_options = tokenizer_options or {}
 
-        self.tokenizer: MBart50TokenizerFast = MBart50TokenizerFast.from_pretrained(
+        self.tokenizer = MBart50TokenizerFast.from_pretrained(
             tokenizer_path, **tokenizer_options
         )
 
@@ -154,10 +154,22 @@ class TranslationModel:
     def get_lang_code_map(self):
         return utils.get_lang_code_map("mbart50")
 
-    def save(self, save_dir: str = "saved_model"):
-        """Saves your model as a torch module, and save your tokenizer.
-        save_dir -- The directory where you want to save your model and tokenizer
+    def save_obj(self, path: str = "saved_model"):
+        """Saves your model as a torch object, and save your tokenizer.
+        path -- The directory where you want to save your model and tokenizer
         """
-        os.makedirs(save_dir, exist_ok=True)
-        torch.save(self.bart_model, os.path.join(save_dir, "weights.pt"))
-        self.tokenizer.save_pretrained(save_dir)
+        os.makedirs(path, exist_ok=True)
+        torch.save(self.bart_model, os.path.join(path, "weights.pt"))
+        self.tokenizer.save_pretrained(path)
+
+    @classmethod
+    def load_obj(cls, path: str = "saved_model", **kwargs):
+        """Initialize TranslationModel from the torch object and tokenizer saved with TranslationModel.save
+        path -- The directory where your torch model and tokenizer are stored
+        """
+        load_dir = os.path.join(path, "weights.pt")
+        return cls(
+            model_or_path=load_dir,
+            tokenizer_path=path,
+            **kwargs
+        )
