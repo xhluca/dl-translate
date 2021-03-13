@@ -59,12 +59,13 @@ class TranslationModel:
         self.model_or_path = model_or_path
         self.device = _select_device(device)
 
+        # Resolve default values
         tokenizer_path = tokenizer_path or self.model_or_path
         model_options = model_options or {}
         tokenizer_options = tokenizer_options or {}
 
-        self.tokenizer = MBart50TokenizerFast.from_pretrained(
-            self.model_or_path, **tokenizer_options
+        self.tokenizer: MBart50TokenizerFast = MBart50TokenizerFast.from_pretrained(
+            tokenizer_path, **tokenizer_options
         )
 
         if model_or_path.endswith(".pt"):
