@@ -60,16 +60,20 @@ class TranslationModel:
         self.tokenizer = MBart50TokenizerFast.from_pretrained(
             model_or_path, **tokenizer_options
         )
-        self.bart_model = MBartForConditionalGeneration.from_pretrained(
-            model_or_path, **model_options
-        ).to(self.device).eval()
+        self.bart_model = (
+            MBartForConditionalGeneration.from_pretrained(
+                model_or_path, **model_options
+            )
+            .to(self.device)
+            .eval()
+        )
 
     def translate(
         self,
         text: Union[str, List[str]],
         source: str,
         target: str,
-        batch_size: int=32,
+        batch_size: int = 32,
         verbose: bool = False,
         generation_options: dict = None,
     ) -> Union[str, List[str]]:
@@ -83,7 +87,7 @@ class TranslationModel:
         """
         if generation_options is None:
             generation_options = {}
-        
+
         source, target = _resolve_lang_codes(source, target)
         self.tokenizer.src_lang = source
 
@@ -95,7 +99,9 @@ class TranslationModel:
             batch_size = len(text)
 
         if "forced_bos_token_id" not in generation_options:
-            generation_options["forced_bos_token_id"] = self.tokenizer.lang_code_to_id[target]
+            generation_options["forced_bos_token_id"] = self.tokenizer.lang_code_to_id[
+                target
+            ]
 
         data_loader = torch.utils.data.DataLoader(text, batch_size=batch_size)
         output_text = []
