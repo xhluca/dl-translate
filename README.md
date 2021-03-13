@@ -14,23 +14,23 @@ Translate some text:
 ```python
 import dl_translate as dlt
 
-model = dlt.TranslationModel()  # Slow when you load it for the first time
+mt = dlt.TranslationModel()  # Slow when you load it for the first time
 
 text_hi = "संयुक्त राष्ट्र के प्रमुख का कहना है कि सीरिया में कोई सैन्य समाधान नहीं है"
-model.translate(text_hi, source=dlt.lang.HINDI, target=dlt.lang.ENGLISH)
+mt.translate(text_hi, source=dlt.lang.HINDI, target=dlt.lang.ENGLISH)
 ```
 
 Above, you can see that `dlt.lang` contains variables representing each of the 50 available languages with auto-complete support. Alternatively, you can specify the language (e.g. "Arabic") or the language code (e.g. "fr_XX" for French):
 ```python
 text_ar = "الأمين العام للأمم المتحدة يقول إنه لا يوجد حل عسكري في سوريا."
-model.translate(text_ar, source="Arabic", target="fr_XX")
+mt.translate(text_ar, source="Arabic", target="fr_XX")
 ```
 
-You can use `dlt.utils` to find out which languages and codes are available:
+If you want to verify whether a language is available, you can check it:
 ```python
-print(dlt.utils.available_languages())  # All languages that you can use
-print(dlt.utils.available_codes())  # Code corresponding to each language accepted
-print(dlt.utils.get_lang_code_map())  # Dictionary of lang -> code
+print(mt.available_languages())  # All languages that you can use
+print(mt.available_codes())  # Code corresponding to each language accepted
+print(mt.get_lang_code_map())  # Dictionary of lang -> code
 ```
 
 ## Usage
@@ -39,7 +39,7 @@ print(dlt.utils.get_lang_code_map())  # Dictionary of lang -> code
 
 When you load the model, you can specify the device:
 ```python
-model = dlt.TranslationModel(device="auto")
+mt = dlt.TranslationModel(device="auto")
 ```
 
 By default, the value will be `device="auto"`, which means it will use a GPU if possible. You can also explicitly set `device="cpu"` or `device="gpu"`, or some other strings accepted by [`torch.device()`](https://pytorch.org/docs/stable/tensor_attributes.html#torch.torch.device). __In general, it is recommend to use a GPU if you want a reasonable processing time.__
@@ -49,7 +49,7 @@ By default, the value will be `device="auto"`, which means it will use a GPU if 
 
 By default, `dlt.TranslationModel` will download the model from the [huggingface repo](https://huggingface.co/facebook/mbart-large-50-one-to-many-mmt) and cache it. However, you are free to load from a path:
 ```python
-model = dlt.TranslationModel("/path/to/your/model/directory/")
+mt = dlt.TranslationModel("/path/to/your/model/directory/")
 ```
 Make sure that your tokenizer is also stored in the same directory if you use this approach.
 
@@ -57,7 +57,7 @@ Make sure that your tokenizer is also stored in the same directory if you use th
 
 You can also choose another model that has [a similar format](https://huggingface.co/models?filter=mbart-50), e.g.
 ```python
-model = dlt.TranslationModel("facebook/mbart-large-50-one-to-many-mmt")
+mt = dlt.TranslationModel("facebook/mbart-large-50-one-to-many-mmt")
 ```
 Note that the available languages will change if you do this, so you will not be able to leverage `dlt.lang` or `dlt.utils`.
 
@@ -71,20 +71,31 @@ nltk.load("punkt")
 
 text = "Mr. Smith went to his favorite cafe. There, he met his friend Dr. Doe."
 sents = nltk.tokenize.sent_tokenize(text, "english")  # don't use dlt.lang.ENGLISH
-" ".join(model.translate(sents, source=dlt.lang.ENGLISH, target=dlt.lang.FRENCH))
+" ".join(mt.translate(sents, source=dlt.lang.ENGLISH, target=dlt.lang.FRENCH))
 ```
 
-### Setting a `batch_size` and verbosity when calling `model.translate`
+### Setting a `batch_size` and verbosity when calling `dlt.TranslationModel.translate`
 
-It's possible to set a batch size (i.e. the number of elements processed at once) for the `model.translate` and whether you want to see the progress bar or not:
+It's possible to set a batch size (i.e. the number of elements processed at once) for `mt.translate` and whether you want to see the progress bar or not:
 
 ```python
 ...
-model = dlt.TranslationModel()
-model.translate(text, source, target, batch_size=32, verbose=True)
+mt = dlt.TranslationModel()
+mt.translate(text, source, target, batch_size=32, verbose=True)
 ```
 
 If you set `batch_size=None`, it will compute the entire `text` at once rather than splitting into "chunks". We recommend lowering `batch_size` if you do not have a lot of RAM or VRAM and run into CUDA memory error. Set a higher value if you are using a high-end GPU and the VRAM is not fully utilized.
+
+
+### `dlt.utils` module
+
+An alternative to `mt.available_languages()` is the `dlt.utils` module. You can use it to find out which languages and codes are available:
+
+```python
+print(dlt.utils.available_languages('mbart50'))  # All languages that you can use
+print(dlt.utils.available_codes('mbart50'))  # Code corresponding to each language accepted
+print(dlt.utils.get_lang_code_map('mbart50'))  # Dictionary of lang -> code
+```
 
 
 ## Advanced
@@ -94,7 +105,7 @@ If you set `batch_size=None`, it will compute the entire `text` at once rather t
 When initializing `model`, you can pass in arguments for the underlying BART model and tokenizer (which will respectively be passed to `MBartForConditionalGeneration.from_pretrained` and `MBart50TokenizerFast.from_pretrained`):
 
 ```python
-model = dlt.TranslationModel(
+mt = dlt.TranslationModel(
     model_options=dict(
         state_dict=...,
         cache_dir=...,
@@ -110,8 +121,8 @@ model = dlt.TranslationModel(
 
 You can also access the underlying `transformers` model and `tokenizer`:
 ```python
-bart = model.get_transformers_model()
-tokenizer = model.get_tokenizer()
+bart = mt.get_transformers_model()
+tokenizer = mt.get_tokenizer()
 ```
 
 See the [huggingface docs](https://huggingface.co/transformers/master/model_doc/mbart.html) for more information.
@@ -119,9 +130,9 @@ See the [huggingface docs](https://huggingface.co/transformers/master/model_doc/
 
 ### `bart_model.generate()` keyword arguments
 
-When running `model.translate`, you can also give a `generation_options` dictionary that is passed as keyword arguments to the underlying `bart_model.generate()` method:
+When running `mt.translate`, you can also give a `generation_options` dictionary that is passed as keyword arguments to the underlying `bart_model.generate()` method:
 ```python
-model.translate(
+mt.translate(
     text,
     source=dlt.lang.GERMAN,
     target=dlt.lang.SPANISH,
@@ -130,6 +141,7 @@ model.translate(
 ```
 
 Learn more in the [huggingface docs](https://huggingface.co/transformers/main_classes/model.html#transformers.generation_utils.GenerationMixin.generate).
+
 
 ## Acknowledgement
 
@@ -143,7 +155,7 @@ Learn more in the [huggingface docs](https://huggingface.co/transformers/main_cl
 }
 ```
 
-`dlt` is a thing wrapper with useful utils to save you time. For huggingface's `transformers`, the following snippet is shown as an example:
+`dlt` is a wrapper with useful `utils` to save you time. For huggingface's `transformers`, the following snippet is shown as an example:
 ```python
 from transformers import MBartForConditionalGeneration, MBart50TokenizerFast
 
@@ -175,9 +187,11 @@ import dl_translate as dlt
 article_hi = "संयुक्त राष्ट्र के प्रमुख का कहना है कि सीरिया में कोई सैन्य समाधान नहीं है"
 article_ar = "الأمين العام للأمم المتحدة يقول إنه لا يوجد حل عسكري في سوريا."
 
-model = dlt.TranslationModel()
-translated_fr = model.translate(article_hi, source=dlt.lang.HINDI, target=dlt.lang.FRENCH)
-translated_en = model.translate(article_ar, source=dlt.lang.ARABIC, target=dlt.lang.ENGLISH)
+mt = dlt.TranslationModel()
+translated_fr = mt.translate(article_hi, source=dlt.lang.HINDI, target=dlt.lang.FRENCH)
+translated_en = mt.translate(article_ar, source=dlt.lang.ARABIC, target=dlt.lang.ENGLISH)
 ```
 
-If you are experienced with `huggingface`'s ecosystem, then you should be familiar enough with the example above that you wouldn't need this library. However, if you've never heard of huggingface or mBART, then I hope using this library will give you enough motivation to learn more about [them](https://github.com/huggingface/transformers) :)
+Notice you don't have to think about tokenizers, condition generation, pretrained models, and regional codes; you can just tell the model what to translate!
+
+If you are experienced with `huggingface`'s ecosystem, then you should be familiar enough with the example above that you wouldn't need this library. However, if you've never heard of huggingface or mBART, then I hope using this library will give you enough motivation to [learn more about them](https://github.com/huggingface/transformers) :)

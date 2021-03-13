@@ -54,15 +54,15 @@ class TranslationModel:
         tokenizer_options -- The keyword arguments passed to the tokenizer model, which is a mBART-50 Fast Tokenizer.
         """
 
-        model_or_path = model_or_path or "facebook/mbart-large-50-many-to-many-mmt"
+        self.model_or_path = model_or_path or "facebook/mbart-large-50-many-to-many-mmt"
         self.device = _select_device(device)
 
         self.tokenizer = MBart50TokenizerFast.from_pretrained(
-            model_or_path, **tokenizer_options
+            self.model_or_path, **tokenizer_options
         )
         self.bart_model = (
             MBartForConditionalGeneration.from_pretrained(
-                model_or_path, **model_options
+                self.model_or_path, **model_options
             )
             .to(self.device)
             .eval()
@@ -133,3 +133,12 @@ class TranslationModel:
     def get_tokenizer(self):
         """Get the mBART huggingface tokenizer."""
         return self.tokenizer
+
+    def available_languages(self):
+        return utils.available_languages("mbart50")
+
+    def available_codes(self):
+        return utils.available_languages("mbart50")
+
+    def get_lang_code_map(self):
+        return utils.get_lang_code_map("mbart50")
