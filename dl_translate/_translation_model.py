@@ -44,29 +44,38 @@ class TranslationModel:
         self,
         model_or_path: str = "facebook/mbart-large-50-many-to-many-mmt",
         device: str = "auto",
-        model_options: dict = {},
-        tokenizer_options: dict = {},
+        tokenizer_path: str = None,
+        model_options: dict = None,
+        tokenizer_options: dict = None,
     ):
         """Instantiates a multilingual transformer model for translation.
         model_or_path -- The path or the name of the model. Equivalent to the first argument of AutoModel.from_pretrained().
         device -- "cpu", "gpu" or "auto". If it's set to "auto", will try to select a GPU when available or else fallback to CPU.
+        tokenizer_path -- The path to the tokenizer, only if it is different from `model_or_path`; otherwise, leave it as `None`.
         model_options -- The keyword arguments passed to the transformer model, which is a mBART-Large for condition generation.
         tokenizer_options -- The keyword arguments passed to the tokenizer model, which is a mBART-50 Fast Tokenizer.
         """
-
-        self.model_or_path = model_or_path or "facebook/mbart-large-50-many-to-many-mmt"
+        self.model_or_path = model_or_path
         self.device = _select_device(device)
+        
+        tokenizer_path = tokenizer_path or self.model_or_path
+        model_options = model_options or {}
+        tokenizer_options = tokenizer_options or {}
 
         self.tokenizer = MBart50TokenizerFast.from_pretrained(
             self.model_or_path, **tokenizer_options
         )
-        self.bart_model = (
-            MBartForConditionalGeneration.from_pretrained(
-                self.model_or_path, **model_options
+
+        if model_or_path.endswith(".pt"):
+            self.bart_model = torch.load(model_or_path, map_location=self.device).eval()
+        else:
+            self.bart_model = (
+                MBartForConditionalGeneration.from_pretrained(
+                    self.model_or_path, **model_options
+                )
+                .to(self.device)
+                .eval()
             )
-            .to(self.device)
-            .eval()
-        )
 
     def translate(
         self,
