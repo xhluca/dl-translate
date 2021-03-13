@@ -12,7 +12,7 @@ def _weights2pairs():
 def _dict_from_weights(weights: str) -> dict:
     """Returns a dictionary of lang, codes, pairs if the provided weights is supported."""
     if weights.lower() in _weights2pairs():
-        return _weights2pairs[weights.lower()]
+        return _weights2pairs()[weights.lower()]
 
     else:
         error_message = f"Incorrect argument '{weights}' for parameter weights. Currently, only 'mbart50' is available."
