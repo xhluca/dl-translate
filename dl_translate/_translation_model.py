@@ -58,7 +58,7 @@ class TranslationModel:
         """
         self.model_or_path = model_or_path
         self.device = _select_device(device)
-        
+
         tokenizer_path = tokenizer_path or self.model_or_path
         model_options = model_options or {}
         tokenizer_options = tokenizer_options or {}
@@ -152,7 +152,6 @@ class TranslationModel:
 
     def get_lang_code_map(self):
         return utils.get_lang_code_map("mbart50")
-
 
     def save(self, save_dir: str = "saved_model"):
         """Saves your model as a torch module, and save your tokenizer.
