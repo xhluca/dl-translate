@@ -135,10 +135,10 @@ class TranslationModel:
         return self.tokenizer
 
     def available_languages(self):
-        return utils.available_languages('mbart50')
+        return utils.available_languages("mbart50")
 
     def available_codes(self):
-        return utils.available_languages('mbart50')
-    
+        return utils.available_languages("mbart50")
+
     def get_lang_code_map(self):
-        return utils.get_lang_code_map('mbart50')
+        return utils.get_lang_code_map("mbart50")
