@@ -100,6 +100,27 @@ print(dlt.utils.get_lang_code_map('mbart50'))  # Dictionary of lang -> code
 
 ## Advanced
 
+The following section assumes you have knowledge of PyTorch and Huggingface Transformers.
+
+### Saving and loading
+
+If you wish to accelerate the loading time the translation model, you can use `save_obj`:
+
+```python
+mt = dlt.TranslationModel()
+mt.save_obj('saved_model')
+# ...
+```
+
+Then later you can reload it with `load_obj`:
+```python
+mt = dlt.TranslationModel.load_obj('saved_model')
+# ...
+```
+
+**Warning:** Only use this if you are certain the torch module saved in `saved_model/weights.pt` can be correctly loaded. Indeed, it is possible that the `huggingface`, `torch` or some other dependencies change between when you called `save_obj` and `load_obj`, and that might break your code. Thus, it is recommend to only run `load_obj` in the same environment/session as `save_obj`. **Note this method might be deprecated in the future once there's no speed benefit in loading this way.**
+
+
 ### Interacting with underlying model and tokenizer
 
 When initializing `model`, you can pass in arguments for the underlying BART model and tokenizer (which will respectively be passed to `MBartForConditionalGeneration.from_pretrained` and `MBart50TokenizerFast.from_pretrained`):
