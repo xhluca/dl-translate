@@ -11,24 +11,35 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.python-version }}
-      - name: Install dependencies
+      
+      - uses: actions/cache@v2
+        # source: https://medium.com/ai2-blog/e9452698e98d
+        with:
+          path: ${{ env.pythonLocation }}
+          key: ${{ env.pythonLocation }}-${{ hashFiles('setup.py') }}
+
+      - name: Install requirements
         run: |
           python -m pip install --upgrade pip
-          pip install -q -e .[dev]
-      - name: Show installed dependencies
+          pip install --upgrade --upgrade-strategy eager -e .[dev]
+
+      - name: Show setup install requires versions
         run: |
-          python -c "import sys; print(sys.version)"
           pip show transformers torch tqdm protobuf tqdm
+
       - name: Lint code with black
         run: |
           black . --check
+
       - name: Run quick tests with pytest
         run: |
           pytest tests/quick
+
       - name: Run long tests with pytest
         if: ${{ matrix.python-version == '3.7' }}
         run: |
