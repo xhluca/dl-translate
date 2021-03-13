@@ -30,8 +30,6 @@ jobs:
         run: |
           pytest tests/quick
       - name: Run long tests with pytest
+        if: ${{ matrix.python-version == '3.7' }}
         run: |
           pytest tests/long
-        with:
-          # Semantic version range syntax or exact version of a Python version
-          python-version: '3.7'
