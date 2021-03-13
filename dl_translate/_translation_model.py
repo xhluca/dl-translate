@@ -1,3 +1,4 @@
+import os
 from typing import Union, List
 
 from transformers import MBartForConditionalGeneration, MBart50TokenizerFast
@@ -151,3 +152,12 @@ class TranslationModel:
 
     def get_lang_code_map(self):
         return utils.get_lang_code_map("mbart50")
+
+
+    def save(self, save_dir: str = "saved_model"):
+        """Saves your model as a torch module, and save your tokenizer.
+        save_dir -- The directory where you want to save your model and tokenizer
+        """
+        os.makedirs(save_dir, exist_ok=True)
+        torch.save(self.bart_model, os.path.join(save_dir, "weights.pt"))
+        self.tokenizer.save_pretrained(save_dir)
