@@ -8,7 +8,7 @@
 dlt.utils.get_lang_code_map(weights: str = 'mbart50') -> Dict[str, str]
 ```
 
-Get a dictionary mapping a language -> code for a given model. The code will depend on the model you choose.
+*Get a dictionary mapping a language -> code for a given model. The code will depend on the model you choose.*
 
 | Parameter | Type | Default | Description |
 |-|-|-|-|
@@ -23,7 +23,7 @@ Get a dictionary mapping a language -> code for a given model. The code will dep
 dlt.utils.available_codes(weights: str = 'mbart50') -> List[str]
 ```
 
-Get all the codes available for a given model. The code format will depend on the model you select.
+*Get all the codes available for a given model. The code format will depend on the model you select.*
 
 | Parameter | Type | Default | Description |
 |-|-|-|-|
@@ -38,7 +38,7 @@ Get all the codes available for a given model. The code format will depend on th
 dlt.utils.available_languages(weights: str = 'mbart50') -> List[str]
 ```
 
-Get all the languages available for a given model.
+*Get all the languages available for a given model.*
 
 | Parameter | Type | Default | Description |
 |-|-|-|-|
