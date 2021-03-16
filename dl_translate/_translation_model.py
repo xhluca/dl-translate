@@ -1,5 +1,5 @@
 import os
-from typing import Union, List
+from typing import Union, List, Dict
 
 from transformers import MBartForConditionalGeneration, MBart50TokenizerFast
 import torch
@@ -49,12 +49,15 @@ class TranslationModel:
         model_options: dict = None,
         tokenizer_options: dict = None,
     ):
-        """Instantiates a multilingual transformer model for translation.
-        model_or_path -- The path or the name of the model. Equivalent to the first argument of AutoModel.from_pretrained().
-        device -- "cpu", "gpu" or "auto". If it's set to "auto", will try to select a GPU when available or else fallback to CPU.
-        tokenizer_path -- The path to the tokenizer, only if it is different from `model_or_path`; otherwise, leave it as `None`.
-        model_options -- The keyword arguments passed to the transformer model, which is a mBART-Large for condition generation.
-        tokenizer_options -- The keyword arguments passed to the tokenizer model, which is a mBART-50 Fast Tokenizer.
+        """
+        Instantiates a multilingual transformer model for translation.
+
+        {{params}}
+        {{model_or_path}} The path or the name of the model. Equivalent to the first argument of AutoModel.from_pretrained().
+        {{device}} "cpu", "gpu" or "auto". If it's set to "auto", will try to select a GPU when available or else fallback to CPU.
+        {{tokenizer_path}} The path to the tokenizer, only if it is different from `model_or_path`; otherwise, leave it as `None`.
+        {{model_options}} The keyword arguments passed to the transformer model, which is a mBART-Large for condition generation.
+        {{tokenizer_options}} The keyword arguments passed to the tokenizer model, which is a mBART-50 Fast Tokenizer.
         """
         self.model_or_path = model_or_path
         self.device = _select_device(device)
@@ -88,13 +91,18 @@ class TranslationModel:
         verbose: bool = False,
         generation_options: dict = None,
     ) -> Union[str, List[str]]:
-        """Translates a string or a list of strings from a source to a target language. Tip: run `print(dlt.utils.available_languages())` to see what's available.
-        text -- The content you want to translate.
-        source -- The language of the original text.
-        target -- The language of the translated text.
-        batch_size -- The number of samples to load at once. A smaller value is preferred if you do not have a lot of (video) RAM. If set to `None`, it will process everything at once.
-        verbose -- Whether to display the progress bar for every batch processed.
-        generation_options -- The keyword arguments passed to bart_model.generate(), where bart_model is the underlying transformers model.
+        """
+        *Translates a string or a list of strings from a source to a target language.*
+
+        {{params}}
+        {{text}} The content you want to translate.
+        {{source}} The language of the original text.
+        {{target}} The language of the translated text.
+        {{batch_size}} The number of samples to load at once. A smaller value is preferred if you do not have a lot of (video) RAM. If set to `None`, it will process everything at once.
+        {{verbose}} Whether to display the progress bar for every batch processed.
+        {{generation_options}} The keyword arguments passed to bart_model.generate(), where bart_model is the underlying transformers model.
+
+        Tip: run `print(dlt.utils.available_languages())` to see what's available.
         """
         if generation_options is None:
             generation_options = {}
@@ -137,26 +145,45 @@ class TranslationModel:
 
         return output_text
 
-    def get_transformers_model(self):
-        """Get the mBART transformer model."""
+    def get_transformers_model(self) -> MBartForConditionalGeneration:
+        """
+        *Retrieve the underlying mBART transformer model.*
+        """
         return self.bart_model
 
-    def get_tokenizer(self):
-        """Get the mBART huggingface tokenizer."""
+    def get_tokenizer(self) -> MBart50TokenizerFast:
+        """
+        *Retrieve the mBART huggingface tokenizer.*
+        """
         return self.tokenizer
 
-    def available_languages(self):
+    def available_languages(self) -> List[str]:
+        """
+        *Returns all the available languages for a given `dlt.TranslationModel`
+        instance.*
+        """
         return utils.available_languages("mbart50")
 
-    def available_codes(self):
+    def available_codes(self) -> List[str]:
+        """
+        *Returns all the available codes for a given `dlt.TranslationModel`
+        instance.*
+        """
         return utils.available_languages("mbart50")
 
-    def get_lang_code_map(self):
+    def get_lang_code_map(self) -> Dict[str, str]:
+        """
+        *Returns the language -> codes dictionary for a given `dlt.TranslationModel`
+        instance.*
+        """
         return utils.get_lang_code_map("mbart50")
 
-    def save_obj(self, path: str = "saved_model"):
-        """Saves your model as a torch object, and save your tokenizer.
-        path -- The directory where you want to save your model and tokenizer
+    def save_obj(self, path: str = "saved_model") -> None:
+        """
+        *Saves your model as a torch object and save your tokenizer.*
+
+        {{params}}
+        {{path}} The directory where you want to save your model and tokenizer
         """
         os.makedirs(path, exist_ok=True)
         torch.save(self.bart_model, os.path.join(path, "weights.pt"))
@@ -164,8 +191,12 @@ class TranslationModel:
 
     @classmethod
     def load_obj(cls, path: str = "saved_model", **kwargs):
-        """Initialize TranslationModel from the torch object and tokenizer saved with TranslationModel.save
-        path -- The directory where your torch model and tokenizer are stored
+        """
+        *Initialize `dlt.TranslationModel` from the torch object and tokenizer
+        saved with `dlt.TranslationModel.save_obj`*
+
+        {{params}}
+        {{path}} The directory where your torch model and tokenizer are stored
         """
         load_dir = os.path.join(path, "weights.pt")
         return cls(model_or_path=load_dir, tokenizer_path=path, **kwargs)
