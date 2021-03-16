@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name="dl-translate",
-    version="0.0.1",
+    version="0.1.0rc1",
     author="Xing Han Lu",
     author_email="github@xinghanlu.com",
     description="A deep learning-based translation library built on Huggingface transformers",
@@ -20,7 +20,7 @@ setuptools.setup(
     packages=setuptools.find_packages(),
     python_requires=">=3.6",
     install_requires=[
-        "transformers @ git+https://github.com/huggingface/transformers",
+        "transformers>=4.4.0",
         "torch",
         "sentencepiece",
         "protobuf",
