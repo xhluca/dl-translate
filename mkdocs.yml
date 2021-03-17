@@ -4,3 +4,6 @@ nav:
   - references.md
   - contributing.md
 theme: readthedocs
+markdown_extensions:
+  - pymdownx.highlight
+  - pymdownx.superfences

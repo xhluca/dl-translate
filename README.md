@@ -2,6 +2,10 @@
 
 *A deep learning-based translation library built on Huggingface `transformers` and Facebook's `mBART-Large`*
 
+💻 [GitHub Repository](https://github.com/xhlulu/dl-translate)\
+📚 [Documentation](https://git.io/dlt-docs) (alt: [readthedocs](https://dl-translate.readthedocs.io))\
+🐍 [PyPi project](https://pypi.org/project/dl-translate/)
+
 ## Quickstart
 
 Install the library with pip:

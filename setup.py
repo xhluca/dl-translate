@@ -26,5 +26,5 @@ setuptools.setup(
         "protobuf",
         "tqdm",
     ],
-    extras_require={"dev": ["pytest", "black", "jinja2", "mkdocs"]},
+    extras_require={"dev": ["pytest", "black", "jinja2", "mkdocs", "mkdocs-material"]},
 )
