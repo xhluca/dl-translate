@@ -75,9 +75,9 @@ class ModuleReferences(NamedTuple):
 
 
 template_path = os.path.join(
-    os.path.dirname(__file__), "..", "templates", "REFERENCES.md.jinja2"
+    os.path.dirname(__file__), "templates", "REFERENCES.md.jinja2"
 )
-save_path = os.path.join(os.path.dirname(__file__), "..", "REFERENCES.md")
+save_path = os.path.join(os.path.dirname(__file__), "..", "docs", "REFERENCES.md")
 
 with open(template_path) as f:
     template = Template(f.read())
@@ -88,14 +88,6 @@ tr = FunctionReference(dlt.TranslationModel.translate)
 
 rendered = template.render(
     modules=[
-        ModuleReferences(
-            "dlt.utils",
-            [
-                FunctionReference(dlt.utils.get_lang_code_map),
-                FunctionReference(dlt.utils.available_codes),
-                FunctionReference(dlt.utils.available_languages),
-            ],
-        ),
         ModuleReferences(
             "dlt.TranslationModel",
             [
@@ -126,6 +118,14 @@ rendered = template.render(
                 FunctionReference(
                     dlt.TranslationModel.load_obj, "dlt.TranslationModel"
                 ),
+            ],
+        ),
+        ModuleReferences(
+            "dlt.utils",
+            [
+                FunctionReference(dlt.utils.get_lang_code_map),
+                FunctionReference(dlt.utils.available_codes),
+                FunctionReference(dlt.utils.available_languages),
             ],
         ),
     ]
