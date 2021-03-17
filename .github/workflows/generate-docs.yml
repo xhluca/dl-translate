@@ -7,10 +7,6 @@ on:
     branches:
       - main
       - dev
-  pull_request:
-    branches:
-      - main
-
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -27,7 +23,4 @@ jobs:
           pip install -r docs/requirements.txt
       - name: Publish Docs
         run: |
-          git branch -D gh-pages
-          git checkout -t upstream/gh-pages
-          git checkout dev
           mkdocs gh-deploy -t material
