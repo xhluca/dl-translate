@@ -3,4 +3,4 @@ nav:
   - index.md
   - references.md
   - contributing.md
-theme: readthedocs
+theme: mkdocs
