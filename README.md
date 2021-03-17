@@ -81,7 +81,7 @@ sents = nltk.tokenize.sent_tokenize(text, "english")  # don't use dlt.lang.ENGLI
 " ".join(mt.translate(sents, source=dlt.lang.ENGLISH, target=dlt.lang.FRENCH))
 ```
 
-### Setting a `batch_size` and verbosity when calling `dlt.TranslationModel.translate`
+### Batch size and verbosity when using `translate`
 
 It's possible to set a batch size (i.e. the number of elements processed at once) for `mt.translate` and whether you want to see the progress bar or not:
 
