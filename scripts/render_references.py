@@ -75,15 +75,12 @@ class ModuleReferences(NamedTuple):
 
 
 template_path = os.path.join(
-    os.path.dirname(__file__), "templates", "REFERENCES.md.jinja2"
+    os.path.dirname(__file__), "templates", "references.md.jinja2"
 )
-save_path = os.path.join(os.path.dirname(__file__), "..", "docs", "REFERENCES.md")
+save_path = os.path.join(os.path.dirname(__file__), "..", "docs", "references.md")
 
 with open(template_path) as f:
     template = Template(f.read())
-
-
-tr = FunctionReference(dlt.TranslationModel.translate)
 
 
 rendered = template.render(

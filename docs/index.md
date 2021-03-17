@@ -1,5 +1,14 @@
 # User Guide
 
+Quick links:
+
+💻 [GitHub Repository](https://github.com/xhlulu/dl-translate)<br>
+📚 [Documentation](https://git.io/dlt-docs) / [Readthedocs](https://dl-translate.readthedocs.io)<br>
+🐍 [PyPi project](https://pypi.org/project/dl-translate/)<br>
+🧪 [Colab Demo](https://colab.research.google.com/github/xhlulu/dl-translate/blob/main/demos/colab_demo.ipynb) / [Kaggle Demo](https://www.kaggle.com/xhlulu/dl-translate-demo/)
+
+
+
 ## Quickstart
 
 Install the library with pip:
@@ -7,7 +16,7 @@ Install the library with pip:
 pip install dl-translate
 ```
 
-Translate some text:
+To translate some text:
 
 ```python
 import dl_translate as dlt
@@ -65,14 +74,14 @@ It is not recommended to use extremely long texts as it takes more time to proce
 ```python
 import nltk
 
-nltk.load("punkt")
+nltk.download("punkt")
 
 text = "Mr. Smith went to his favorite cafe. There, he met his friend Dr. Doe."
 sents = nltk.tokenize.sent_tokenize(text, "english")  # don't use dlt.lang.ENGLISH
 " ".join(mt.translate(sents, source=dlt.lang.ENGLISH, target=dlt.lang.FRENCH))
 ```
 
-### Setting a `batch_size` and verbosity when calling `dlt.TranslationModel.translate`
+### Batch size and verbosity when using `translate`
 
 It's possible to set a batch size (i.e. the number of elements processed at once) for `mt.translate` and whether you want to see the progress bar or not:
 
@@ -160,3 +169,57 @@ mt.translate(
 ```
 
 Learn more in the [huggingface docs](https://huggingface.co/transformers/main_classes/model.html#transformers.generation_utils.GenerationMixin.generate).
+
+
+## Acknowledgement
+
+`dl-translate` is built on top of Huggingface's implementation of multilingual BART finetuned on many-to-many translation of over 50 languages, which is [documented here](https://huggingface.co/transformers/master/model_doc/mbart.html). The original paper was written by Tang et. al from Facebook AI Research; you can [find it here](https://arxiv.org/pdf/2008.00401.pdf) and cite it using the following:
+```
+@article{tang2020multilingual,
+  title={Multilingual translation with extensible multilingual pretraining and finetuning},
+  author={Tang, Yuqing and Tran, Chau and Li, Xian and Chen, Peng-Jen and Goyal, Naman and Chaudhary, Vishrav and Gu, Jiatao and Fan, Angela},
+  journal={arXiv preprint arXiv:2008.00401},
+  year={2020}
+}
+```
+
+`dlt` is a wrapper with useful `utils` to save you time. For huggingface's `transformers`, the following snippet is shown as an example:
+```python
+from transformers import MBartForConditionalGeneration, MBart50TokenizerFast
+
+article_hi = "संयुक्त राष्ट्र के प्रमुख का कहना है कि सीरिया में कोई सैन्य समाधान नहीं है"
+article_ar = "الأمين العام للأمم المتحدة يقول إنه لا يوجد حل عسكري في سوريا."
+
+model = MBartForConditionalGeneration.from_pretrained("facebook/mbart-large-50-many-to-many-mmt")
+tokenizer = MBart50TokenizerFast.from_pretrained("facebook/mbart-large-50-many-to-many-mmt")
+
+# translate Hindi to French
+tokenizer.src_lang = "hi_IN"
+encoded_hi = tokenizer(article_hi, return_tensors="pt")
+generated_tokens = model.generate(**encoded_hi, forced_bos_token_id=tokenizer.lang_code_to_id["fr_XX"])
+tokenizer.batch_decode(generated_tokens, skip_special_tokens=True)
+# => "Le chef de l 'ONU affirme qu 'il n 'y a pas de solution militaire en Syria."
+
+# translate Arabic to English
+tokenizer.src_lang = "ar_AR"
+encoded_ar = tokenizer(article_ar, return_tensors="pt")
+generated_tokens = model.generate(**encoded_ar, forced_bos_token_id=tokenizer.lang_code_to_id["en_XX"])
+tokenizer.batch_decode(generated_tokens, skip_special_tokens=True)
+# => "The Secretary-General of the United Nations says there is no military solution in Syria."
+```
+
+With `dlt`, you can run:
+```python
+import dl_translate as dlt
+
+article_hi = "संयुक्त राष्ट्र के प्रमुख का कहना है कि सीरिया में कोई सैन्य समाधान नहीं है"
+article_ar = "الأمين العام للأمم المتحدة يقول إنه لا يوجد حل عسكري في سوريا."
+
+mt = dlt.TranslationModel()
+translated_fr = mt.translate(article_hi, source=dlt.lang.HINDI, target=dlt.lang.FRENCH)
+translated_en = mt.translate(article_ar, source=dlt.lang.ARABIC, target=dlt.lang.ENGLISH)
+```
+
+Notice you don't have to think about tokenizers, condition generation, pretrained models, and regional codes; you can just tell the model what to translate!
+
+If you are experienced with `huggingface`'s ecosystem, then you should be familiar enough with the example above that you wouldn't need this library. However, if you've never heard of huggingface or mBART, then I hope using this library will give you enough motivation to [learn more about them](https://github.com/huggingface/transformers) :)
