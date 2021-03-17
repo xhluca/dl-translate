@@ -26,4 +26,4 @@ jobs:
           pip install -r docs/requirements.txt
       - name: Publish Docs
         run: |
-          mkdocs gh-deploy -t material
+          mkdocs gh-deploy -t material --force
