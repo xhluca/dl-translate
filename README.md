@@ -2,6 +2,13 @@
 
 *A deep learning-based translation library built on Huggingface `transformers` and Facebook's `mBART-Large`*
 
+💻 [GitHub Repository](https://github.com/xhlulu/dl-translate)\
+📚 [Documentation](https://git.io/dlt-docs) / [Readthedocs](https://dl-translate.readthedocs.io)\
+🐍 [PyPi project](https://pypi.org/project/dl-translate/)\
+🧪 [Colab Demo](https://colab.research.google.com/github/xhlulu/dl-translate/blob/main/demos/colab_demo.ipynb) / [Kaggle Demo](https://www.kaggle.com/xhlulu/dl-translate-demo/)
+
+
+
 ## Quickstart
 
 Install the library with pip:
@@ -9,7 +16,7 @@ Install the library with pip:
 pip install dl-translate
 ```
 
-Translate some text:
+To translate some text:
 
 ```python
 import dl_translate as dlt
@@ -67,7 +74,7 @@ It is not recommended to use extremely long texts as it takes more time to proce
 ```python
 import nltk
 
-nltk.load("punkt")
+nltk.download("punkt")
 
 text = "Mr. Smith went to his favorite cafe. There, he met his friend Dr. Doe."
 sents = nltk.tokenize.sent_tokenize(text, "english")  # don't use dlt.lang.ENGLISH

@@ -117,17 +117,17 @@ class TranslationModel:
         if batch_size is None:
             batch_size = len(text)
 
-        if "forced_bos_token_id" not in generation_options:
-            generation_options["forced_bos_token_id"] = self.tokenizer.lang_code_to_id[
-                target
-            ]
+        generation_options.setdefault(
+            "forced_bos_token_id", self.tokenizer.lang_code_to_id[target]
+        )
 
         data_loader = torch.utils.data.DataLoader(text, batch_size=batch_size)
         output_text = []
 
         with torch.no_grad():
             for batch in tqdm(data_loader, disable=not verbose):
-                encoded = self.tokenizer(batch, return_tensors="pt").to(self.device)
+                encoded = self.tokenizer(batch, return_tensors="pt", padding=True)
+                encoded.to(self.device)
 
                 generated_tokens = self.bart_model.generate(
                     **encoded, **generation_options
