@@ -1,60 +1,10 @@
-
-# dlt.utils
-
-
-## get_lang_code_map
-
-```python
-dlt.utils.get_lang_code_map(weights: str = 'mbart50') -> Dict[str, str]
-```
-
-*Get a dictionary mapping a language -> code for a given model. The code will depend on the model you choose.*
-
-| Parameter | Type | Default | Description |
-|-|-|-|-|
-| **weights** | *str* | `mbart50` | The name of the model you are using. For example, "mbart50" is the multilingual BART Large with 50 languages available to use.
-
-<br>
+# API Reference
 
 
-## available_codes
-
-```python
-dlt.utils.available_codes(weights: str = 'mbart50') -> List[str]
-```
-
-*Get all the codes available for a given model. The code format will depend on the model you select.*
-
-| Parameter | Type | Default | Description |
-|-|-|-|-|
-| **weights** | *str* | `mbart50` | The name of the model you are using. For example, "mbart50" is the multilingual BART Large with 50 codes available to use.
-
-<br>
+## dlt.TranslationModel
 
 
-## available_languages
-
-```python
-dlt.utils.available_languages(weights: str = 'mbart50') -> List[str]
-```
-
-*Get all the languages available for a given model.*
-
-| Parameter | Type | Default | Description |
-|-|-|-|-|
-| **weights** | *str* | `mbart50` | The name of the model you are using. For example, "mbart50" is the multilingual BART Large with 50 languages available to use.
-
-<br>
-
-
-
-<br>
-
-
-# dlt.TranslationModel
-
-
-## __init__
+### __init__
 
 ```python
 dlt.TranslationModel.__init__(self, model_or_path: str = 'facebook/mbart-large-50-many-to-many-mmt', tokenizer_path: str = None, device: str = 'auto', model_options: dict = None, tokenizer_options: dict = None)
@@ -73,7 +23,7 @@ Instantiates a multilingual transformer model for translation.
 <br>
 
 
-## translate
+### translate
 
 ```python
 dlt.TranslationModel.translate(self, text: Union[str, List[str]], source: str, target: str, batch_size: int = 32, verbose: bool = False, generation_options: dict = None) -> Union[str, List[str]]
@@ -95,7 +45,7 @@ Tip: run `print(dlt.utils.available_languages())` to see what's available.
 <br>
 
 
-## get_transformers_model
+### get_transformers_model
 
 ```python
 dlt.TranslationModel.get_transformers_model(self) -> transformers.models.mbart.modeling_mbart.MBartForConditionalGeneration
@@ -106,7 +56,7 @@ dlt.TranslationModel.get_transformers_model(self) -> transformers.models.mbart.m
 <br>
 
 
-## get_tokenizer
+### get_tokenizer
 
 ```python
 dlt.TranslationModel.get_tokenizer(self) -> transformers.models.mbart.tokenization_mbart50_fast.MBart50TokenizerFast
@@ -117,7 +67,7 @@ dlt.TranslationModel.get_tokenizer(self) -> transformers.models.mbart.tokenizati
 <br>
 
 
-## available_codes
+### available_codes
 
 ```python
 dlt.TranslationModel.available_codes(self) -> List[str]
@@ -129,7 +79,7 @@ instance.*
 <br>
 
 
-## available_languages
+### available_languages
 
 ```python
 dlt.TranslationModel.available_languages(self) -> List[str]
@@ -141,7 +91,7 @@ instance.*
 <br>
 
 
-## get_lang_code_map
+### get_lang_code_map
 
 ```python
 dlt.TranslationModel.get_lang_code_map(self) -> Dict[str, str]
@@ -153,7 +103,7 @@ instance.*
 <br>
 
 
-## save_obj
+### save_obj
 
 ```python
 dlt.TranslationModel.save_obj(self, path: str = 'saved_model') -> None
@@ -168,7 +118,7 @@ dlt.TranslationModel.save_obj(self, path: str = 'saved_model') -> None
 <br>
 
 
-## load_obj
+### load_obj
 
 ```python
 dlt.TranslationModel.load_obj(path: str = 'saved_model', **kwargs)
@@ -180,6 +130,58 @@ saved with `dlt.TranslationModel.save_obj`*
 | Parameter | Type | Default | Description |
 |-|-|-|-|
 | **path** | *str* | `saved_model` | The directory where your torch model and tokenizer are stored
+
+<br>
+
+
+
+<br>
+
+
+## dlt.utils
+
+
+### get_lang_code_map
+
+```python
+dlt.utils.get_lang_code_map(weights: str = 'mbart50') -> Dict[str, str]
+```
+
+*Get a dictionary mapping a language -> code for a given model. The code will depend on the model you choose.*
+
+| Parameter | Type | Default | Description |
+|-|-|-|-|
+| **weights** | *str* | `mbart50` | The name of the model you are using. For example, "mbart50" is the multilingual BART Large with 50 languages available to use.
+
+<br>
+
+
+### available_codes
+
+```python
+dlt.utils.available_codes(weights: str = 'mbart50') -> List[str]
+```
+
+*Get all the codes available for a given model. The code format will depend on the model you select.*
+
+| Parameter | Type | Default | Description |
+|-|-|-|-|
+| **weights** | *str* | `mbart50` | The name of the model you are using. For example, "mbart50" is the multilingual BART Large with 50 codes available to use.
+
+<br>
+
+
+### available_languages
+
+```python
+dlt.utils.available_languages(weights: str = 'mbart50') -> List[str]
+```
+
+*Get all the languages available for a given model.*
+
+| Parameter | Type | Default | Description |
+|-|-|-|-|
+| **weights** | *str* | `mbart50` | The name of the model you are using. For example, "mbart50" is the multilingual BART Large with 50 languages available to use.
 
 <br>
 

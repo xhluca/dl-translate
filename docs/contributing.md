@@ -1,3 +1,5 @@
+# Contributing to the project
+
 ## Setup
 
 To set up the development environment, clone the repo:
@@ -32,4 +34,16 @@ python -m pytest tests
 For quick tests, run:
 ```bash
 python -m pytest tests/fast
+```
+
+## Documentation
+
+To re-generate the documentation after the source code was modified:
+```bash
+python scripts/render_references.py
+```
+
+To run the docs locally, run:
+```
+mkdocs serve
 ```

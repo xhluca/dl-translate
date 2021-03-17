@@ -1,0 +1,6 @@
+site_name: DL Translate
+nav:
+  - index.md
+  - references.md
+  - contributing.md
+theme: readthedocs
