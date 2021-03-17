@@ -7,7 +7,7 @@ Install the library with pip:
 pip install dl-translate
 ```
 
-Translate some text:
+To translate some text:
 
 ```python
 import dl_translate as dlt
@@ -65,7 +65,7 @@ It is not recommended to use extremely long texts as it takes more time to proce
 ```python
 import nltk
 
-nltk.load("punkt")
+nltk.download("punkt")
 
 text = "Mr. Smith went to his favorite cafe. There, he met his friend Dr. Doe."
 sents = nltk.tokenize.sent_tokenize(text, "english")  # don't use dlt.lang.ENGLISH
