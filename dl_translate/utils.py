@@ -1,19 +1,31 @@
 from typing import Dict, List
 
-from ._pairs import _PAIRS_MBART50
+from ._pairs import _PAIRS_MBART50, _PAIRS_M2M100
 
 
 def _weights2pairs():
     return {
-        "mbart-large-50-many-to-many-mmt": _PAIRS_MBART50,
         "mbart50": _PAIRS_MBART50,
+        "mbart-large-50-many-to-many-mmt": _PAIRS_MBART50,
         "facebook/mbart-large-50-many-to-many-mmt": _PAIRS_MBART50,
+        "m2m100": _PAIRS_M2M100,
+        "m2m100_418M": _PAIRS_M2M100,
+        "m2m100_1.2B": _PAIRS_M2M100,
+        "facebook/m2m100_418M": _PAIRS_M2M100,
+        "facebook/m2m100_1.2B": _PAIRS_M2M100,
     }
 
 
 def _dict_from_weights(weights: str) -> dict:
     """Returns a dictionary of lang, codes, pairs if the provided weights is supported."""
-    if weights.lower() in _weights2pairs():
+    if weights in _weights2pairs():
+        pairs = _weights2pairs()[weights]
+        return {
+            "langs": tuple(pair[0] for pair in pairs),
+            "codes": tuple(pair[1] for pair in pairs),
+            "pairs": dict(pairs),
+        }
+    elif weights.lower() in _weights2pairs():
         pairs = _weights2pairs()[weights.lower()]
         return {
             "langs": tuple(pair[0] for pair in pairs),
@@ -22,7 +34,7 @@ def _dict_from_weights(weights: str) -> dict:
         }
 
     else:
-        error_message = f"Incorrect argument '{weights}' for parameter weights. Currently, only 'mbart50' is available."
+        error_message = f"Incorrect argument '{weights}' for parameter weights. Please choose from: {list(_weights2pairs().keys())}"
         raise ValueError(error_message)
 
 
