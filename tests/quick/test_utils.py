@@ -5,7 +5,16 @@ from dl_translate._pairs import _PAIRS_MBART50
 
 
 def test_dict_from_weights():
-    weights = ["mbart50", "mbart-large-50-many-to-many-mmt"]
+    weights = [
+        "mbart50",
+        "mbart-large-50-many-to-many-mmt",
+        "facebook/mbart-large-50-many-to-many-mmt",
+        "m2m100",
+        "m2m100_418M",
+        "m2m100_1.2B",
+        "facebook/m2m100_418M",
+        "facebook/m2m100_1.2B",
+    ]
 
     valid_keys = ["langs", "codes", "pairs"]
 
@@ -18,10 +27,6 @@ def test_dict_from_weights():
 
 
 def test_dict_from_weights_exception():
-    weights = ["mbart50", "mbart-large-50-many-to-many-mmt"]
-
-    valid_keys = ["langs", "codes", "pairs"]
-
     with pytest.raises(ValueError):
         utils._dict_from_weights("incorrect")
 
