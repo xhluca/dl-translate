@@ -72,9 +72,11 @@ class TranslationModel:
         )
 
         if model_or_path.endswith(".pt"):
-            self.bart_model = torch.load(model_or_path, map_location=self.device).eval()
+            self._transformers_model = torch.load(
+                model_or_path, map_location=self.device
+            ).eval()
         else:
-            self.bart_model = (
+            self._transformers_model = (
                 MBartForConditionalGeneration.from_pretrained(
                     self.model_or_path, **model_options
                 )
@@ -129,7 +131,7 @@ class TranslationModel:
                 encoded = self.tokenizer(batch, return_tensors="pt", padding=True)
                 encoded.to(self.device)
 
-                generated_tokens = self.bart_model.generate(
+                generated_tokens = self._transformers_model.generate(
                     **encoded, **generation_options
                 ).cpu()
 
@@ -149,7 +151,7 @@ class TranslationModel:
         """
         *Retrieve the underlying mBART transformer model.*
         """
-        return self.bart_model
+        return self._transformers_model
 
     def get_tokenizer(self) -> MBart50TokenizerFast:
         """
@@ -186,7 +188,7 @@ class TranslationModel:
         {{path}} The directory where you want to save your model and tokenizer
         """
         os.makedirs(path, exist_ok=True)
-        torch.save(self.bart_model, os.path.join(path, "weights.pt"))
+        torch.save(self._transformers_model, os.path.join(path, "weights.pt"))
         self.tokenizer.save_pretrained(path)
 
     @classmethod
