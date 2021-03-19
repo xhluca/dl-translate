@@ -1,7 +1,7 @@
 import pytest
 
 from dl_translate import utils
-from dl_translate._pairs import _PAIRS_MBART50
+from dl_translate._pairs import _PAIRS_MBART50, _PAIRS_M2M100
 
 
 def test_dict_from_weights():
@@ -32,14 +32,28 @@ def test_dict_from_weights_exception():
 
 
 def test_available_languages():
+    assert utils.available_languages() == utils.available_languages("mbart50")
+
     langs = utils.available_languages()
 
     for lang, _ in _PAIRS_MBART50:
         assert lang in langs
 
+    langs = utils.available_languages("m2m100")
+
+    for lang, _ in _PAIRS_M2M100:
+        assert lang in langs
+
 
 def test_available_codes():
+    assert utils.available_codes() == utils.available_codes("mbart50")
+
     codes = utils.available_codes()
 
     for _, code in _PAIRS_MBART50:
+        assert code in codes
+
+    codes = utils.available_codes("m2m100")
+
+    for _, code in _PAIRS_M2M100:
         assert code in codes
