@@ -110,7 +110,7 @@ class TranslationModel:
 
         # Load the tokenizer
         TokenizerFast = _resolve_tokenizer(self.model_family)
-        self.tokenizer = TokenizerFast.from_pretrained(
+        self._tokenizer = TokenizerFast.from_pretrained(
             tokenizer_path, **tokenizer_options
         )
 
@@ -159,7 +159,7 @@ class TranslationModel:
             generation_options = {}
 
         source, target = _resolve_lang_codes(source, target, self.model_family)
-        self.tokenizer.src_lang = source
+        self._tokenizer.src_lang = source
 
         original_text_type = type(text)
         if original_text_type is str:
@@ -169,7 +169,7 @@ class TranslationModel:
             batch_size = len(text)
 
         generation_options.setdefault(
-            "forced_bos_token_id", self.tokenizer.lang_code_to_id[target]
+            "forced_bos_token_id", self._tokenizer.lang_code_to_id[target]
         )
 
         data_loader = torch.utils.data.DataLoader(text, batch_size=batch_size)
@@ -177,14 +177,14 @@ class TranslationModel:
 
         with torch.no_grad():
             for batch in tqdm(data_loader, disable=not verbose):
-                encoded = self.tokenizer(batch, return_tensors="pt", padding=True)
+                encoded = self._tokenizer(batch, return_tensors="pt", padding=True)
                 encoded.to(self.device)
 
                 generated_tokens = self._transformers_model.generate(
                     **encoded, **generation_options
                 ).cpu()
 
-                decoded = self.tokenizer.batch_decode(
+                decoded = self._tokenizer.batch_decode(
                     generated_tokens, skip_special_tokens=True
                 )
 
@@ -206,7 +206,7 @@ class TranslationModel:
         """
         *Retrieve the mBART huggingface tokenizer.*
         """
-        return self.tokenizer
+        return self._tokenizer
 
     def available_languages(self) -> List[str]:
         """
@@ -238,7 +238,7 @@ class TranslationModel:
         """
         os.makedirs(path, exist_ok=True)
         torch.save(self._transformers_model, os.path.join(path, "weights.pt"))
-        self.tokenizer.save_pretrained(path)
+        self._tokenizer.save_pretrained(path)
 
     @classmethod
     def load_obj(cls, path: str = "saved_model", **kwargs):
