@@ -120,7 +120,9 @@ class TranslationModel:
                 model_or_path, map_location=self.device
             ).eval()
         else:
-            ModelForConditionalGeneration = _resolve_transformers_model(self.model_family)
+            ModelForConditionalGeneration = _resolve_transformers_model(
+                self.model_family
+            )
             self._transformers_model = (
                 ModelForConditionalGeneration.from_pretrained(
                     self.model_or_path, **model_options
@@ -149,7 +151,7 @@ class TranslationModel:
         {{verbose}} Whether to display the progress bar for every batch processed.
         {{generation_options}} The keyword arguments passed to `model.generate()`, where `model` is the underlying transformers model.
 
-        Note: 
+        Note:
         - Run `print(dlt.utils.available_languages())` to see what's available.
         - A smaller value is preferred for `batch_size` if your (video) RAM is limited.
         """
