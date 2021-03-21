@@ -1,4 +1,4 @@
-# Auto-generated. Do not modify, use scripts/generate_m2m100.py instead.
+# Auto-generated. Do not modify, use scripts/generate_langs.py instead.
 _PAIRS_M2M100 = (
     ("Afrikaans", "af"),
     ("Amharic", "am"),
