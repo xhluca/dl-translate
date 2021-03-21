@@ -22,19 +22,19 @@ def _select_device(device_selection):
     return device
 
 
-def _resolve_lang_codes(source: str, target: str):
+def _resolve_lang_codes(source: str, target: str, model_family: str):
     def error_message(variable, value):
-        return f'Your {variable}="{value}" is not valid. Please run `print(dlt.utils.available_languages())` to see which languages are available.'
+        return f'Your {variable}="{value}" is not valid. Please run `print(mt.available_languages())` to see which languages are available.'
 
     # If can't find in the lang -> code mapping, assumes it's already a code.
-    lang_code_map = utils.get_lang_code_map()
+    lang_code_map = utils.get_lang_code_map(model_family)
     source = lang_code_map.get(source.capitalize(), source)
     target = lang_code_map.get(target.capitalize(), target)
 
     # If the code is not valid, raises an error
-    if source not in utils.available_codes():
+    if source not in utils.available_codes(model_family):
         raise ValueError(error_message("source", source))
-    if target not in utils.available_codes():
+    if target not in utils.available_codes(model_family):
         raise ValueError(error_message("target", target))
 
     return source, target
@@ -106,10 +106,10 @@ class TranslationModel:
         tokenizer_path = tokenizer_path or self.model_or_path
         model_options = model_options or {}
         tokenizer_options = tokenizer_options or {}
-        model_family = model_family or _infer_model_family(model_or_path)
+        self.model_family = model_family or _infer_model_family(model_or_path)
 
         # Load the tokenizer
-        TokenizerFast = _resolve_tokenizer(model_family)
+        TokenizerFast = _resolve_tokenizer(self.model_family)
         self.tokenizer = TokenizerFast.from_pretrained(
             tokenizer_path, **tokenizer_options
         )
@@ -120,7 +120,7 @@ class TranslationModel:
                 model_or_path, map_location=self.device
             ).eval()
         else:
-            ModelForConditionalGeneration = _resolve_transformers_model(model_family)
+            ModelForConditionalGeneration = _resolve_transformers_model(self.model_family)
             self._transformers_model = (
                 ModelForConditionalGeneration.from_pretrained(
                     self.model_or_path, **model_options
@@ -156,7 +156,7 @@ class TranslationModel:
         if generation_options is None:
             generation_options = {}
 
-        source, target = _resolve_lang_codes(source, target)
+        source, target = _resolve_lang_codes(source, target, self.model_family)
         self.tokenizer.src_lang = source
 
         original_text_type = type(text)
@@ -211,21 +211,21 @@ class TranslationModel:
         *Returns all the available languages for a given `dlt.TranslationModel`
         instance.*
         """
-        return utils.available_languages("mbart50")
+        return utils.available_languages(self.model_family)
 
     def available_codes(self) -> List[str]:
         """
         *Returns all the available codes for a given `dlt.TranslationModel`
         instance.*
         """
-        return utils.available_languages("mbart50")
+        return utils.available_codes(self.model_family)
 
     def get_lang_code_map(self) -> Dict[str, str]:
         """
         *Returns the language -> codes dictionary for a given `dlt.TranslationModel`
         instance.*
         """
-        return utils.get_lang_code_map("mbart50")
+        return utils.get_lang_code_map(self.model_family)
 
     def save_obj(self, path: str = "saved_model") -> None:
         """
