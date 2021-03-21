@@ -7,18 +7,19 @@
 ### __init__
 
 ```python
-dlt.TranslationModel.__init__(self, model_or_path: str = 'facebook/mbart-large-50-many-to-many-mmt', tokenizer_path: str = None, device: str = 'auto', model_options: dict = None, tokenizer_options: dict = None)
+dlt.TranslationModel.__init__(self, model_or_path: str = 'facebook/mbart-large-50-many-to-many-mmt', tokenizer_path: str = None, device: str = 'auto', model_family: str = None, model_options: dict = None, tokenizer_options: dict = None)
 ```
 
-Instantiates a multilingual transformer model for translation.
+*Instantiates a multilingual transformer model for translation.*
 
 | Parameter | Type | Default | Description |
 |-|-|-|-|
-| **model_or_path** | *str* | `facebook/mbart-large-50-many-to-many-mmt` | The path or the name of the model. Equivalent to the first argument of AutoModel.from_pretrained().
-| **device** | *str* | `auto` | "cpu", "gpu" or "auto". If it's set to "auto", will try to select a GPU when available or else fallback to CPU.
-| **tokenizer_path** | *str* | *optional* | The path to the tokenizer, only if it is different from `model_or_path`; otherwise, leave it as `None`.
-| **model_options** | *dict* | *optional* | The keyword arguments passed to the transformer model, which is a mBART-Large for condition generation.
-| **tokenizer_options** | *dict* | *optional* | The keyword arguments passed to the tokenizer model, which is a mBART-50 Fast Tokenizer.
+| **model_or_path** | *str* | `facebook/mbart-large-50-many-to-many-mmt` | The path or the name of the model. Equivalent to the first argument of `AutoModel.from_pretrained()`.
+| **tokenizer_path** | *str* | *optional* | The path to the tokenizer. By default, it will be set to `model_or_path`.
+| **device** | *str* | `auto` | "cpu", "gpu" or "auto". If it's set to "auto", will try to select a GPU when available or else fall back to CPU.
+| **model_family** | *str* | *optional* | Either "mbart50" or "m2m100". By default, it will be inferred based on `model_or_path`. Needs to be explicitly set if `model_or_path` is a path.
+| **model_options** | *dict* | *optional* | The keyword arguments passed to the model, which is a transformer for conditional generation.
+| **tokenizer_options** | *dict* | *optional* | The keyword arguments passed to the model's tokenizer.
 
 <br>
 
@@ -36,11 +37,13 @@ dlt.TranslationModel.translate(self, text: Union[str, List[str]], source: str, t
 | **text** | *Union[str, List[str]]* | *required* | The content you want to translate.
 | **source** | *str* | *required* | The language of the original text.
 | **target** | *str* | *required* | The language of the translated text.
-| **batch_size** | *int* | `32` | The number of samples to load at once. A smaller value is preferred if you do not have a lot of (video) RAM. If set to `None`, it will process everything at once.
+| **batch_size** | *int* | `32` | The number of samples to load at once. If set to `None`, it will process everything at once.
 | **verbose** | *bool* | `False` | Whether to display the progress bar for every batch processed.
-| **generation_options** | *dict* | *optional* | The keyword arguments passed to bart_model.generate(), where bart_model is the underlying transformers model.
+| **generation_options** | *dict* | *optional* | The keyword arguments passed to `model.generate()`, where `model` is the underlying transformers model.
 
-Tip: run `print(dlt.utils.available_languages())` to see what's available.
+Note:
+- Run `print(dlt.utils.available_languages())` to see what's available.
+- A smaller value is preferred for `batch_size` if your (video) RAM is limited.
 
 <br>
 
@@ -48,7 +51,7 @@ Tip: run `print(dlt.utils.available_languages())` to see what's available.
 ### get_transformers_model
 
 ```python
-dlt.TranslationModel.get_transformers_model(self) -> transformers.models.mbart.modeling_mbart.MBartForConditionalGeneration
+dlt.TranslationModel.get_transformers_model(self)
 ```
 
 *Retrieve the underlying mBART transformer model.*
@@ -59,7 +62,7 @@ dlt.TranslationModel.get_transformers_model(self) -> transformers.models.mbart.m
 ### get_tokenizer
 
 ```python
-dlt.TranslationModel.get_tokenizer(self) -> transformers.models.mbart.tokenization_mbart50_fast.MBart50TokenizerFast
+dlt.TranslationModel.get_tokenizer(self)
 ```
 
 *Retrieve the mBART huggingface tokenizer.*

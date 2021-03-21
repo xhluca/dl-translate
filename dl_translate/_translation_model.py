@@ -1,7 +1,7 @@
 import os
 from typing import Union, List, Dict
 
-from transformers import MBartForConditionalGeneration, MBart50TokenizerFast
+import transformers
 import torch
 from tqdm.auto import tqdm
 
@@ -22,22 +22,60 @@ def _select_device(device_selection):
     return device
 
 
-def _resolve_lang_codes(source: str, target: str):
+def _resolve_lang_codes(source: str, target: str, model_family: str):
     def error_message(variable, value):
-        return f'Your {variable}="{value}" is not valid. Please run `print(dlt.utils.available_languages())` to see which languages are available.'
+        return f'Your {variable}="{value}" is not valid. Please run `print(mt.available_languages())` to see which languages are available.'
 
     # If can't find in the lang -> code mapping, assumes it's already a code.
-    lang_code_map = utils.get_lang_code_map()
+    lang_code_map = utils.get_lang_code_map(model_family)
     source = lang_code_map.get(source.capitalize(), source)
     target = lang_code_map.get(target.capitalize(), target)
 
     # If the code is not valid, raises an error
-    if source not in utils.available_codes():
+    if source not in utils.available_codes(model_family):
         raise ValueError(error_message("source", source))
-    if target not in utils.available_codes():
+    if target not in utils.available_codes(model_family):
         raise ValueError(error_message("target", target))
 
     return source, target
+
+
+def _resolve_tokenizer(model_family):
+    di = {
+        "mbart50": transformers.MBart50TokenizerFast,
+        "m2m100": transformers.M2M100Tokenizer,
+    }
+    if model_family in di:
+        return di[model_family]
+    else:
+        error_msg = f"{model_family} is not a valid value for model_family. Please choose model_family to be equal to one of the following values: {list(di.keys())}"
+        raise ValueError(error_msg)
+
+
+def _resolve_transformers_model(model_family):
+    di = {
+        "mbart50": transformers.MBartForConditionalGeneration,
+        "m2m100": transformers.M2M100ForConditionalGeneration,
+    }
+    if model_family in di:
+        return di[model_family]
+    else:
+        error_msg = f"{model_family} is not a valid value for model_family. Please choose model_family to be equal to one of the following values: {list(di.keys())}"
+        raise ValueError(error_msg)
+
+
+def _infer_model_family(model_or_path):
+    di = {
+        "facebook/mbart-large-50-many-to-many-mmt": "mbart50",
+        "facebook/m2m100_418M": "m2m100",
+        "facebook/m2m100_1.2B": "m2m100",
+    }
+
+    if model_or_path in di:
+        return di[model_or_path]
+    else:
+        error_msg = f'Unable to infer the model_family from "{model_or_path}". Try explicitly setting the value of model_family to "mbart50" or "m2m100".'
+        raise ValueError(error_msg)
 
 
 class TranslationModel:
@@ -46,18 +84,20 @@ class TranslationModel:
         model_or_path: str = "facebook/mbart-large-50-many-to-many-mmt",
         tokenizer_path: str = None,
         device: str = "auto",
+        model_family: str = None,
         model_options: dict = None,
         tokenizer_options: dict = None,
     ):
         """
-        Instantiates a multilingual transformer model for translation.
+        *Instantiates a multilingual transformer model for translation.*
 
         {{params}}
-        {{model_or_path}} The path or the name of the model. Equivalent to the first argument of AutoModel.from_pretrained().
-        {{device}} "cpu", "gpu" or "auto". If it's set to "auto", will try to select a GPU when available or else fallback to CPU.
-        {{tokenizer_path}} The path to the tokenizer, only if it is different from `model_or_path`; otherwise, leave it as `None`.
-        {{model_options}} The keyword arguments passed to the transformer model, which is a mBART-Large for condition generation.
-        {{tokenizer_options}} The keyword arguments passed to the tokenizer model, which is a mBART-50 Fast Tokenizer.
+        {{model_or_path}} The path or the name of the model. Equivalent to the first argument of `AutoModel.from_pretrained()`.
+        {{tokenizer_path}} The path to the tokenizer. By default, it will be set to `model_or_path`.
+        {{device}} "cpu", "gpu" or "auto". If it's set to "auto", will try to select a GPU when available or else fall back to CPU.
+        {{model_family}} Either "mbart50" or "m2m100". By default, it will be inferred based on `model_or_path`. Needs to be explicitly set if `model_or_path` is a path.
+        {{model_options}} The keyword arguments passed to the model, which is a transformer for conditional generation.
+        {{tokenizer_options}} The keyword arguments passed to the model's tokenizer.
         """
         self.model_or_path = model_or_path
         self.device = _select_device(device)
@@ -66,16 +106,25 @@ class TranslationModel:
         tokenizer_path = tokenizer_path or self.model_or_path
         model_options = model_options or {}
         tokenizer_options = tokenizer_options or {}
+        self.model_family = model_family or _infer_model_family(model_or_path)
 
-        self.tokenizer = MBart50TokenizerFast.from_pretrained(
+        # Load the tokenizer
+        TokenizerFast = _resolve_tokenizer(self.model_family)
+        self._tokenizer = TokenizerFast.from_pretrained(
             tokenizer_path, **tokenizer_options
         )
 
+        # Load the model either from a saved torch model or from transformers.
         if model_or_path.endswith(".pt"):
-            self.bart_model = torch.load(model_or_path, map_location=self.device).eval()
+            self._transformers_model = torch.load(
+                model_or_path, map_location=self.device
+            ).eval()
         else:
-            self.bart_model = (
-                MBartForConditionalGeneration.from_pretrained(
+            ModelForConditionalGeneration = _resolve_transformers_model(
+                self.model_family
+            )
+            self._transformers_model = (
+                ModelForConditionalGeneration.from_pretrained(
                     self.model_or_path, **model_options
                 )
                 .to(self.device)
@@ -98,17 +147,19 @@ class TranslationModel:
         {{text}} The content you want to translate.
         {{source}} The language of the original text.
         {{target}} The language of the translated text.
-        {{batch_size}} The number of samples to load at once. A smaller value is preferred if you do not have a lot of (video) RAM. If set to `None`, it will process everything at once.
+        {{batch_size}} The number of samples to load at once. If set to `None`, it will process everything at once.
         {{verbose}} Whether to display the progress bar for every batch processed.
-        {{generation_options}} The keyword arguments passed to bart_model.generate(), where bart_model is the underlying transformers model.
+        {{generation_options}} The keyword arguments passed to `model.generate()`, where `model` is the underlying transformers model.
 
-        Tip: run `print(dlt.utils.available_languages())` to see what's available.
+        Note:
+        - Run `print(dlt.utils.available_languages())` to see what's available.
+        - A smaller value is preferred for `batch_size` if your (video) RAM is limited.
         """
         if generation_options is None:
             generation_options = {}
 
-        source, target = _resolve_lang_codes(source, target)
-        self.tokenizer.src_lang = source
+        source, target = _resolve_lang_codes(source, target, self.model_family)
+        self._tokenizer.src_lang = source
 
         original_text_type = type(text)
         if original_text_type is str:
@@ -118,7 +169,7 @@ class TranslationModel:
             batch_size = len(text)
 
         generation_options.setdefault(
-            "forced_bos_token_id", self.tokenizer.lang_code_to_id[target]
+            "forced_bos_token_id", self._tokenizer.lang_code_to_id[target]
         )
 
         data_loader = torch.utils.data.DataLoader(text, batch_size=batch_size)
@@ -126,14 +177,14 @@ class TranslationModel:
 
         with torch.no_grad():
             for batch in tqdm(data_loader, disable=not verbose):
-                encoded = self.tokenizer(batch, return_tensors="pt", padding=True)
+                encoded = self._tokenizer(batch, return_tensors="pt", padding=True)
                 encoded.to(self.device)
 
-                generated_tokens = self.bart_model.generate(
+                generated_tokens = self._transformers_model.generate(
                     **encoded, **generation_options
                 ).cpu()
 
-                decoded = self.tokenizer.batch_decode(
+                decoded = self._tokenizer.batch_decode(
                     generated_tokens, skip_special_tokens=True
                 )
 
@@ -145,38 +196,38 @@ class TranslationModel:
 
         return output_text
 
-    def get_transformers_model(self) -> MBartForConditionalGeneration:
+    def get_transformers_model(self):
         """
         *Retrieve the underlying mBART transformer model.*
         """
-        return self.bart_model
+        return self._transformers_model
 
-    def get_tokenizer(self) -> MBart50TokenizerFast:
+    def get_tokenizer(self):
         """
         *Retrieve the mBART huggingface tokenizer.*
         """
-        return self.tokenizer
+        return self._tokenizer
 
     def available_languages(self) -> List[str]:
         """
         *Returns all the available languages for a given `dlt.TranslationModel`
         instance.*
         """
-        return utils.available_languages("mbart50")
+        return utils.available_languages(self.model_family)
 
     def available_codes(self) -> List[str]:
         """
         *Returns all the available codes for a given `dlt.TranslationModel`
         instance.*
         """
-        return utils.available_languages("mbart50")
+        return utils.available_codes(self.model_family)
 
     def get_lang_code_map(self) -> Dict[str, str]:
         """
         *Returns the language -> codes dictionary for a given `dlt.TranslationModel`
         instance.*
         """
-        return utils.get_lang_code_map("mbart50")
+        return utils.get_lang_code_map(self.model_family)
 
     def save_obj(self, path: str = "saved_model") -> None:
         """
@@ -186,8 +237,8 @@ class TranslationModel:
         {{path}} The directory where you want to save your model and tokenizer
         """
         os.makedirs(path, exist_ok=True)
-        torch.save(self.bart_model, os.path.join(path, "weights.pt"))
-        self.tokenizer.save_pretrained(path)
+        torch.save(self._transformers_model, os.path.join(path, "weights.pt"))
+        self._tokenizer.save_pretrained(path)
 
     @classmethod
     def load_obj(cls, path: str = "saved_model", **kwargs):

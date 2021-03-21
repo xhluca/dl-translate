@@ -1,4 +1,4 @@
-# Auto-generated. Do not modify, use scripts/generate_lang.py instead.
+# Auto-generated. Do not modify, use scripts/generate_langs.py instead.
 ARABIC = "Arabic"
 CZECH = "Czech"
 GERMAN = "German"
