@@ -16,14 +16,16 @@ for name in ["m2m100", "mbart50"]:
 
     for key, val in di.items():
         content += f"- {key} ({val})\n"
-    
+
     template_values[name] = content
-    
+
 
 template_path = os.path.join(
     os.path.dirname(__file__), "templates", "available_languages.md.jinja2"
 )
-save_path = os.path.join(os.path.dirname(__file__), "..", "docs", "available_languages.md")
+save_path = os.path.join(
+    os.path.dirname(__file__), "..", "docs", "available_languages.md"
+)
 
 with open(template_path) as f:
     template = Template(f.read())
