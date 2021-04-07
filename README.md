@@ -52,21 +52,17 @@ mt = dlt.TranslationModel(device="auto")
 By default, the value will be `device="auto"`, which means it will use a GPU if possible. You can also explicitly set `device="cpu"` or `device="gpu"`, or some other strings accepted by [`torch.device()`](https://pytorch.org/docs/stable/tensor_attributes.html#torch.torch.device). __In general, it is recommend to use a GPU if you want a reasonable processing time.__
 
 
-### Loading from a path
+### Loading a model variant or from a path
 
-By default, `dlt.TranslationModel` will download the model from the [huggingface repo](https://huggingface.co/facebook/mbart-large-50-one-to-many-mmt) and cache it. However, you are free to load from a path:
+By default, `dlt.TranslationModel` will download the model from the [huggingface repo](https://huggingface.co/facebook/mbart-large-50-one-to-many-mmt) and cache it. It's possible to load the model from a path or a model with a similar format, but you will need to specify the `model_family`:
 ```python
-mt = dlt.TranslationModel("/path/to/your/model/directory/")
+mt = dlt.TranslationModel("/path/to/model/directory/", model_family="mbart50")
+mt = dlt.TranslationModel("facebook/m2m100_1.2B", model_family="m2m100")
 ```
-Make sure that your tokenizer is also stored in the same directory if you use this approach.
 
-### Using a different model
-
-You can also choose another model that has [a similar format](https://huggingface.co/models?filter=mbart-50), e.g.
-```python
-mt = dlt.TranslationModel("facebook/mbart-large-50-one-to-many-mmt")
-```
-Note that the available languages will change if you do this, so you will not be able to leverage `dlt.lang` or `dlt.utils`.
+Notes:
+* Make sure your tokenizer is also stored in the same directory if you load from a file. 
+* The available languages will change if you select a different model, so you will not be able to leverage `dlt.lang` or `dlt.utils`.
 
 ### Breaking down into sentences
 
@@ -86,7 +82,7 @@ sents = nltk.tokenize.sent_tokenize(text, "english")  # don't use dlt.lang.ENGLI
 It's possible to set a batch size (i.e. the number of elements processed at once) for `mt.translate` and whether you want to see the progress bar or not:
 
 ```python
-...
+# ...
 mt = dlt.TranslationModel()
 mt.translate(text, source, target, batch_size=32, verbose=True)
 ```
@@ -107,81 +103,37 @@ print(dlt.utils.get_lang_code_map('mbart50'))  # Dictionary of lang -> code
 
 ## Advanced
 
-The following section assumes you have knowledge of PyTorch and Huggingface Transformers.
+If you have knowledge of PyTorch and Huggingface Transformers, you can access advanced aspects of the library for more customization:
+* **Saving and loading**: If you wish to accelerate the loading time the translation model, you can use `save_obj` and reload it later with `load_obj`. This method is only recommended if you are familiar with `huggingface` and `torch`; please read the docs for more information.
+* **Interacting with underlying model and tokenizer**: When initializing `model`, you can pass in arguments for the underlying BART model and tokenizer with `model_options` and `tokenizer_options` respectively. You can also access the underlying `transformers` with `mt.get_transformers_model()`.
+* **Keyword arguments for the `generate()` method**: When running `mt.translate`, you can also give `generation_options` that is passed to the `generate()` method of the underlying transformer model.
 
-### Saving and loading
-
-If you wish to accelerate the loading time the translation model, you can use `save_obj`:
-
-```python
-mt = dlt.TranslationModel()
-mt.save_obj('saved_model')
-# ...
-```
-
-Then later you can reload it with `load_obj`:
-```python
-mt = dlt.TranslationModel.load_obj('saved_model')
-# ...
-```
-
-**Warning:** Only use this if you are certain the torch module saved in `saved_model/weights.pt` can be correctly loaded. Indeed, it is possible that the `huggingface`, `torch` or some other dependencies change between when you called `save_obj` and `load_obj`, and that might break your code. Thus, it is recommend to only run `load_obj` in the same environment/session as `save_obj`. **Note this method might be deprecated in the future once there's no speed benefit in loading this way.**
-
-
-### Interacting with underlying model and tokenizer
-
-When initializing `model`, you can pass in arguments for the underlying BART model and tokenizer (which will respectively be passed to `MBartForConditionalGeneration.from_pretrained` and `MBart50TokenizerFast.from_pretrained`):
-
-```python
-mt = dlt.TranslationModel(
-    model_options=dict(
-        state_dict=...,
-        cache_dir=...,
-        ...
-    ),
-    tokenizer_options=dict(
-        tokenizer_file=...,
-        eos_token=...,
-        ...
-    )
-)
-```
-
-You can also access the underlying `transformers` model and `tokenizer`:
-```python
-bart = mt.get_transformers_model()
-tokenizer = mt.get_tokenizer()
-```
-
-See the [huggingface docs](https://huggingface.co/transformers/master/model_doc/mbart.html) for more information.
-
-
-### `bart_model.generate()` keyword arguments
-
-When running `mt.translate`, you can also give a `generation_options` dictionary that is passed as keyword arguments to the underlying `bart_model.generate()` method:
-```python
-mt.translate(
-    text,
-    source=dlt.lang.GERMAN,
-    target=dlt.lang.SPANISH,
-    generation_options=dict(num_beams=5, max_length=...)
-)
-```
-
-Learn more in the [huggingface docs](https://huggingface.co/transformers/main_classes/model.html#transformers.generation_utils.GenerationMixin.generate).
-
+For more information, please visit the [advanced section of the user guide](https://xhlulu.github.io/dl-translate/#advanced) (also available in the [readthedocs version](https://dl-translate.readthedocs.io/en/latest/#advanced)).
 
 ## Acknowledgement
 
-`dl-translate` is built on top of Huggingface's implementation of multilingual BART finetuned on many-to-many translation of over 50 languages, which is [documented here](https://huggingface.co/transformers/master/model_doc/mbart.html). The original paper was written by Tang et. al from Facebook AI Research; you can [find it here](https://arxiv.org/pdf/2008.00401.pdf) and cite it using the following:
-```
-@article{tang2020multilingual,
-  title={Multilingual translation with extensible multilingual pretraining and finetuning},
-  author={Tang, Yuqing and Tran, Chau and Li, Xian and Chen, Peng-Jen and Goyal, Naman and Chaudhary, Vishrav and Gu, Jiatao and Fan, Angela},
-  journal={arXiv preprint arXiv:2008.00401},
-  year={2020}
-}
-```
+`dl-translate` is built on top of Huggingface's implementation of two models created by Facebook AI Research.
+
+1. The multilingual BART finetuned on many-to-many translation of over 50 languages, which is [documented here](https://huggingface.co/transformers/master/model_doc/mbart.html) The original paper was written by Tang et. al from Facebook AI Research; you can [find it here](https://arxiv.org/pdf/2008.00401.pdf) and cite it using the following:
+    ```
+    @article{tang2020multilingual,
+        title={Multilingual translation with extensible multilingual pretraining and finetuning},
+        author={Tang, Yuqing and Tran, Chau and Li, Xian and Chen, Peng-Jen and Goyal, Naman and Chaudhary, Vishrav and Gu, Jiatao and Fan, Angela},
+        journal={arXiv preprint arXiv:2008.00401},
+        year={2020}
+    }
+    ```
+2. The transformer model published in [Beyond English-Centric Multilingual Machine Translation](https://arxiv.org/abs/2010.11125) by Fan et. al, which supports over 100 languages. You can cite it here:
+   ```
+   @misc{fan2020englishcentric,
+        title={Beyond English-Centric Multilingual Machine Translation}, 
+        author={Angela Fan and Shruti Bhosale and Holger Schwenk and Zhiyi Ma and Ahmed El-Kishky and Siddharth Goyal and Mandeep Baines and Onur Celebi and Guillaume Wenzek and Vishrav Chaudhary and Naman Goyal and Tom Birch and Vitaliy Liptchinsky and Sergey Edunov and Edouard Grave and Michael Auli and Armand Joulin},
+        year={2020},
+        eprint={2010.11125},
+        archivePrefix={arXiv},
+        primaryClass={cs.CL}
+    }
+   ```
 
 `dlt` is a wrapper with useful `utils` to save you time. For huggingface's `transformers`, the following snippet is shown as an example:
 ```python
