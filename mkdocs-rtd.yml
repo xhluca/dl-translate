@@ -5,4 +5,5 @@ nav:
   - index.md
   - references.md
   - contributing.md
+  - available_languages.md
 theme: readthedocs
