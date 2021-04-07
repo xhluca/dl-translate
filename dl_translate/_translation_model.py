@@ -103,7 +103,7 @@ class TranslationModel:
         *Instantiates a multilingual transformer model for translation.*
 
         {{params}}
-        {{model_or_path}} The path or the name of the model. Equivalent to the first argument of `AutoModel.from_pretrained()`.
+        {{model_or_path}} The path or the name of the model. Equivalent to the first argument of `AutoModel.from_pretrained()`. You can also specify shorthands ("mbart50" and "m2m100").
         {{tokenizer_path}} The path to the tokenizer. By default, it will be set to `model_or_path`.
         {{device}} "cpu", "gpu" or "auto". If it's set to "auto", will try to select a GPU when available or else fall back to CPU.
         {{model_family}} Either "mbart50" or "m2m100". By default, it will be inferred based on `model_or_path`. Needs to be explicitly set if `model_or_path` is a path.
