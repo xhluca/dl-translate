@@ -78,10 +78,21 @@ def _infer_model_family(model_or_path):
         raise ValueError(error_msg)
 
 
+def _infer_model_or_path(model_or_path):
+    di = {
+        "mbart50": "facebook/mbart-large-50-many-to-many-mmt",
+        "m2m100": "facebook/m2m100_418M",
+        "m2m100-small": "facebook/m2m100_418M",
+        "m2m100-medium": "facebook/m2m100_1.2B",
+    }
+
+    return di.get(model_or_path, model_or_path)
+
+
 class TranslationModel:
     def __init__(
         self,
-        model_or_path: str = "facebook/mbart-large-50-many-to-many-mmt",
+        model_or_path: str = "mbart50",
         tokenizer_path: str = None,
         device: str = "auto",
         model_family: str = None,
@@ -99,7 +110,7 @@ class TranslationModel:
         {{model_options}} The keyword arguments passed to the model, which is a transformer for conditional generation.
         {{tokenizer_options}} The keyword arguments passed to the model's tokenizer.
         """
-        self.model_or_path = model_or_path
+        self.model_or_path = _infer_model_or_path(model_or_path)
         self.device = _select_device(device)
 
         # Resolve default values
