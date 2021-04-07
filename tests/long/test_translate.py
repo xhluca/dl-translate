@@ -8,7 +8,7 @@ def test_translate():
 
     assert (
         mt.translate(msg_en, source="English", target="Spanish")
-        == "Hola a todos, ¿cómo va?"
+        == 'Hola a todos, ¿cómo estás?'
     )
 
     fr_1 = mt.translate(msg_en, source="English", target="French")
