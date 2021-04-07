@@ -120,9 +120,9 @@ An alternative to `mt.available_languages()` is the `dlt.utils` module. You can 
 
 ```python
 print(dlt.utils.available_languages('mbart50'))  # All languages that you can use
-print(dlt.utils.available_languages('m2m100'))  # write the name of the model family
 print(dlt.utils.available_codes('mbart50'))  # Code corresponding to each language accepted
 print(dlt.utils.get_lang_code_map('mbart50'))  # Dictionary of lang -> code
+print(dlt.utils.available_languages('m2m100'))  # write the name of the model family
 ```
 
 At the moment, the following models are accepted:
