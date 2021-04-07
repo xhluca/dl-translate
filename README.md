@@ -9,7 +9,7 @@
 
 
 
-## Quickstart
+## ⚡Quickstart
 
 Install the library with pip:
 ```
@@ -51,7 +51,7 @@ mt = dlt.TranslationModel(device="auto")
 
 By default, the value will be `device="auto"`, which means it will use a GPU if possible. You can also explicitly set `device="cpu"` or `device="gpu"`, or some other strings accepted by [`torch.device()`](https://pytorch.org/docs/stable/tensor_attributes.html#torch.torch.device). __In general, it is recommend to use a GPU if you want a reasonable processing time.__
 
-### Changing the model you are loading
+### Choosing a different model
 
 Two model families are available at the moment: [m2m100](https://huggingface.co/transformers/model_doc/m2m_100.html) and [mBART-50 Large](https://huggingface.co/transformers/master/model_doc/mbart.html), which respective allow translation across over 100 languages and 50 languages. By default, the model will select `m2m100`, but you can also explicitly choose the model by specifying the shorthand (`"m2m100"` or `"mbart50"`) or the full repository name (e.g. `"facebook/m2m100_418M"`). For example:
 
@@ -77,7 +77,7 @@ Notes:
 * Make sure your tokenizer is also stored in the same directory if you load from a file. 
 * The available languages will change if you select a different model, so you will not be able to leverage `dlt.lang` or `dlt.utils`.
 
-### Breaking down into sentences
+### Splitting into sentences
 
 It is not recommended to use extremely long texts as it takes more time to process. Instead, you can try to break them down into sentences with the help of `nltk`. First install the library with `pip install nltk`, then run:
 ```python
@@ -90,7 +90,7 @@ sents = nltk.tokenize.sent_tokenize(text, "english")  # don't use dlt.lang.ENGLI
 " ".join(mt.translate(sents, source=dlt.lang.ENGLISH, target=dlt.lang.FRENCH))
 ```
 
-### Batch size and verbosity when using `translate`
+### Batch size during translation
 
 It's possible to set a batch size (i.e. the number of elements processed at once) for `mt.translate` and whether you want to see the progress bar or not:
 
@@ -103,7 +103,7 @@ mt.translate(text, source, target, batch_size=32, verbose=True)
 If you set `batch_size=None`, it will compute the entire `text` at once rather than splitting into "chunks". We recommend lowering `batch_size` if you do not have a lot of RAM or VRAM and run into CUDA memory error. Set a higher value if you are using a high-end GPU and the VRAM is not fully utilized.
 
 
-### `dlt.utils` module
+### Utility functions
 
 An alternative to `mt.available_languages()` is the `dlt.utils` module. You can use it to find out which languages and codes are available:
 
@@ -114,7 +114,7 @@ print(dlt.utils.get_lang_code_map('mbart50'))  # Dictionary of lang -> code
 ```
 
 
-## Advanced
+## ❗Advanced
 
 If you have knowledge of PyTorch and Huggingface Transformers, you can access advanced aspects of the library for more customization:
 * **Saving and loading**: If you wish to accelerate the loading time the translation model, you can use `save_obj` and reload it later with `load_obj`. This method is only recommended if you are familiar with `huggingface` and `torch`; please read the docs for more information.
@@ -123,7 +123,7 @@ If you have knowledge of PyTorch and Huggingface Transformers, you can access ad
 
 For more information, please visit the [advanced section of the user guide](https://xhlulu.github.io/dl-translate/#advanced) (also available in the [readthedocs version](https://dl-translate.readthedocs.io/en/latest/#advanced)).
 
-## Acknowledgement
+## 🙏Acknowledgement
 
 `dl-translate` is built on top of Huggingface's implementation of two models created by Facebook AI Research.
 
