@@ -173,15 +173,28 @@ Learn more in the [huggingface docs](https://huggingface.co/transformers/main_cl
 
 ## Acknowledgement
 
-`dl-translate` is built on top of Huggingface's implementation of multilingual BART finetuned on many-to-many translation of over 50 languages, which is [documented here](https://huggingface.co/transformers/master/model_doc/mbart.html). The original paper was written by Tang et. al from Facebook AI Research; you can [find it here](https://arxiv.org/pdf/2008.00401.pdf) and cite it using the following:
-```
-@article{tang2020multilingual,
-  title={Multilingual translation with extensible multilingual pretraining and finetuning},
-  author={Tang, Yuqing and Tran, Chau and Li, Xian and Chen, Peng-Jen and Goyal, Naman and Chaudhary, Vishrav and Gu, Jiatao and Fan, Angela},
-  journal={arXiv preprint arXiv:2008.00401},
-  year={2020}
-}
-```
+`dl-translate` is built on top of Huggingface's implementation of two models created by Facebook AI Research.
+
+1. The multilingual BART finetuned on many-to-many translation of over 50 languages, which is [documented here](https://huggingface.co/transformers/master/model_doc/mbart.html) The original paper was written by Tang et. al from Facebook AI Research; you can [find it here](https://arxiv.org/pdf/2008.00401.pdf) and cite it using the following:
+    ```
+    @article{tang2020multilingual,
+        title={Multilingual translation with extensible multilingual pretraining and finetuning},
+        author={Tang, Yuqing and Tran, Chau and Li, Xian and Chen, Peng-Jen and Goyal, Naman and Chaudhary, Vishrav and Gu, Jiatao and Fan, Angela},
+        journal={arXiv preprint arXiv:2008.00401},
+        year={2020}
+    }
+    ```
+2. The transformer model published in [Beyond English-Centric Multilingual Machine Translation](https://arxiv.org/abs/2010.11125) by Fan et. al, which supports over 100 languages. You can cite it here:
+   ```
+   @misc{fan2020englishcentric,
+        title={Beyond English-Centric Multilingual Machine Translation}, 
+        author={Angela Fan and Shruti Bhosale and Holger Schwenk and Zhiyi Ma and Ahmed El-Kishky and Siddharth Goyal and Mandeep Baines and Onur Celebi and Guillaume Wenzek and Vishrav Chaudhary and Naman Goyal and Tom Birch and Vitaliy Liptchinsky and Sergey Edunov and Edouard Grave and Michael Auli and Armand Joulin},
+        year={2020},
+        eprint={2010.11125},
+        archivePrefix={arXiv},
+        primaryClass={cs.CL}
+    }
+   ```
 
 `dlt` is a wrapper with useful `utils` to save you time. For huggingface's `transformers`, the following snippet is shown as an example:
 ```python
