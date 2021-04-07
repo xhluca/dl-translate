@@ -110,7 +110,8 @@ class TranslationModel:
         {{model_options}} The keyword arguments passed to the model, which is a transformer for conditional generation.
         {{tokenizer_options}} The keyword arguments passed to the model's tokenizer.
         """
-        self.model_or_path = _infer_model_or_path(model_or_path)
+        model_or_path = _infer_model_or_path(model_or_path)
+        self.model_or_path = model_or_path
         self.device = _select_device(device)
 
         # Resolve default values
