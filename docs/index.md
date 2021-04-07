@@ -27,10 +27,10 @@ text_hi = "संयुक्त राष्ट्र के प्रमुख
 mt.translate(text_hi, source=dlt.lang.HINDI, target=dlt.lang.ENGLISH)
 ```
 
-Above, you can see that `dlt.lang` contains variables representing each of the 50 available languages with auto-complete support. Alternatively, you can specify the language (e.g. "Arabic") or the language code (e.g. "fr_XX" for French):
+Above, you can see that `dlt.lang` contains variables representing each of the 50 available languages with auto-complete support. Alternatively, you can specify the language (e.g. "Arabic") or the language code (e.g. "fr" for French):
 ```python
 text_ar = "الأمين العام للأمم المتحدة يقول إنه لا يوجد حل عسكري في سوريا."
-mt.translate(text_ar, source="Arabic", target="fr_XX")
+mt.translate(text_ar, source="Arabic", target="fr")
 ```
 
 If you want to verify whether a language is available, you can check it:
@@ -53,6 +53,21 @@ mt = dlt.TranslationModel(device="gpu")  # Force you to use a GPU
 mt = dlt.TranslationModel(device="cuda:2")  # Use the 3rd GPU available
 ```
 
+### Changing the model you are loading
+
+Two model families are available at the moment: [m2m100](https://huggingface.co/transformers/model_doc/m2m_100.html) and [mBART-50 Large](https://huggingface.co/transformers/master/model_doc/mbart.html), which respective allow translation across over 100 languages and 50 languages. By default, the model will select `m2m100`, but you can also explicitly choose the model by specifying the shorthand (`"m2m100"` or `"mbart50"`) or the full repository name (e.g. `"facebook/m2m100_418M"`). For example:
+
+```python
+# The following ways are equivalent
+mt = dlt.TranslationModel("m2m100")  # Default
+mt = dlt.TranslationModel("facebook/m2m100_418M")
+
+# The following ways are equivalent
+mt = dlt.TranslationModel("mbart50")
+mt = dlt.TranslationModel("facebook/mbart-large-50-many-to-many-mmt")
+```
+
+Note that the language code will change depending on the model family. To find out the correct language codes, please read the doc page on available languages or run `mt.available_codes()`.
 
 ### Loading from a path
 
