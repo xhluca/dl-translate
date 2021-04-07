@@ -51,7 +51,7 @@ mt = dlt.TranslationModel(device="auto")
 
 By default, the value will be `device="auto"`, which means it will use a GPU if possible. You can also explicitly set `device="cpu"` or `device="gpu"`, or some other strings accepted by [`torch.device()`](https://pytorch.org/docs/stable/tensor_attributes.html#torch.torch.device). __In general, it is recommend to use a GPU if you want a reasonable processing time.__
 
-### Changing the model you are loading
+### Choosing a different model
 
 Two model families are available at the moment: [m2m100](https://huggingface.co/transformers/model_doc/m2m_100.html) and [mBART-50 Large](https://huggingface.co/transformers/master/model_doc/mbart.html), which respective allow translation across over 100 languages and 50 languages. By default, the model will select `m2m100`, but you can also explicitly choose the model by specifying the shorthand (`"m2m100"` or `"mbart50"`) or the full repository name (e.g. `"facebook/m2m100_418M"`). For example:
 
@@ -77,7 +77,7 @@ Notes:
 * Make sure your tokenizer is also stored in the same directory if you load from a file. 
 * The available languages will change if you select a different model, so you will not be able to leverage `dlt.lang` or `dlt.utils`.
 
-### Breaking down into sentences
+### Splitting into sentences
 
 It is not recommended to use extremely long texts as it takes more time to process. Instead, you can try to break them down into sentences with the help of `nltk`. First install the library with `pip install nltk`, then run:
 ```python
@@ -90,7 +90,7 @@ sents = nltk.tokenize.sent_tokenize(text, "english")  # don't use dlt.lang.ENGLI
 " ".join(mt.translate(sents, source=dlt.lang.ENGLISH, target=dlt.lang.FRENCH))
 ```
 
-### Batch size and verbosity when using `translate`
+### Batch size during translation
 
 It's possible to set a batch size (i.e. the number of elements processed at once) for `mt.translate` and whether you want to see the progress bar or not:
 
