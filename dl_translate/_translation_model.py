@@ -92,7 +92,7 @@ def _infer_model_or_path(model_or_path):
 class TranslationModel:
     def __init__(
         self,
-        model_or_path: str = "mbart50",
+        model_or_path: str = "m2m100",
         tokenizer_path: str = None,
         device: str = "auto",
         model_family: str = None,
