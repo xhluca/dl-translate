@@ -27,10 +27,10 @@ text_hi = "संयुक्त राष्ट्र के प्रमुख
 mt.translate(text_hi, source=dlt.lang.HINDI, target=dlt.lang.ENGLISH)
 ```
 
-Above, you can see that `dlt.lang` contains variables representing each of the 50 available languages with auto-complete support. Alternatively, you can specify the language (e.g. "Arabic") or the language code (e.g. "fr_XX" for French):
+Above, you can see that `dlt.lang` contains variables representing each of the 50 available languages with auto-complete support. Alternatively, you can specify the language (e.g. "Arabic") or the language code (e.g. "fr" for French):
 ```python
 text_ar = "الأمين العام للأمم المتحدة يقول إنه لا يوجد حل عسكري في سوريا."
-mt.translate(text_ar, source="Arabic", target="fr_XX")
+mt.translate(text_ar, source="Arabic", target="fr")
 ```
 
 If you want to verify whether a language is available, you can check it:
@@ -51,10 +51,23 @@ mt = dlt.TranslationModel(device="auto")
 
 By default, the value will be `device="auto"`, which means it will use a GPU if possible. You can also explicitly set `device="cpu"` or `device="gpu"`, or some other strings accepted by [`torch.device()`](https://pytorch.org/docs/stable/tensor_attributes.html#torch.torch.device). __In general, it is recommend to use a GPU if you want a reasonable processing time.__
 
+### Changing the model you are loading
 
-### Loading a model variant or from a path
+Two model families are available at the moment: [m2m100](https://huggingface.co/transformers/model_doc/m2m_100.html) and [mBART-50 Large](https://huggingface.co/transformers/master/model_doc/mbart.html), which respective allow translation across over 100 languages and 50 languages. By default, the model will select `m2m100`, but you can also explicitly choose the model by specifying the shorthand (`"m2m100"` or `"mbart50"`) or the full repository name (e.g. `"facebook/m2m100_418M"`). For example:
 
-By default, `dlt.TranslationModel` will download the model from the [huggingface repo](https://huggingface.co/facebook/mbart-large-50-one-to-many-mmt) and cache it. It's possible to load the model from a path or a model with a similar format, but you will need to specify the `model_family`:
+```python
+# The following ways are equivalent
+mt = dlt.TranslationModel("m2m100")  # Default
+mt = dlt.TranslationModel("facebook/m2m100_418M")
+
+# The following ways are equivalent
+mt = dlt.TranslationModel("mbart50")
+mt = dlt.TranslationModel("facebook/mbart-large-50-many-to-many-mmt")
+```
+
+Note that the language code will change depending on the model family. To find out the correct language codes, please read the doc page on available languages or run `mt.available_codes()`.
+
+By default, `dlt.TranslationModel` will download the model from the huggingface repo for [mbart50](https://huggingface.co/facebook/mbart-large-50-one-to-many-mmt) or [m2m100](https://huggingface.co/facebook/m2m100_418M) and cache it. It's possible to load the model from a path or a model with a similar format, but you will need to specify the `model_family`:
 ```python
 mt = dlt.TranslationModel("/path/to/model/directory/", model_family="mbart50")
 mt = dlt.TranslationModel("facebook/m2m100_1.2B", model_family="m2m100")

@@ -1,7 +1,13 @@
+import pytest
 import torch
 
 import dl_translate as dlt
-from dl_translate._translation_model import _resolve_lang_codes, _select_device
+from dl_translate._translation_model import (
+    _resolve_lang_codes,
+    _select_device,
+    _infer_model_or_path,
+    _infer_model_family,
+)
 
 
 def test_resolve_lang_codes_mbart50():
@@ -33,3 +39,21 @@ def test_select_device():
         assert _select_device("auto") == torch.device("cuda")
     else:
         assert _select_device("auto") == torch.device("cpu")
+
+
+def test_infer_model_or_path():
+    assert _infer_model_or_path("mbart50") == "facebook/mbart-large-50-many-to-many-mmt"
+    assert _infer_model_or_path("m2m100") == "facebook/m2m100_418M"
+    assert _infer_model_or_path("m2m100-small") == "facebook/m2m100_418M"
+    assert _infer_model_or_path("m2m100-medium") == "facebook/m2m100_1.2B"
+
+    assert _infer_model_or_path("non-existing-value") == "non-existing-value"
+
+
+def test_infer_model_family():
+    assert _infer_model_family("facebook/mbart-large-50-many-to-many-mmt") == "mbart50"
+    assert _infer_model_family("facebook/m2m100_418M") == "m2m100"
+    assert _infer_model_family("facebook/m2m100_1.2B") == "m2m100"
+
+    with pytest.raises(ValueError):
+        _infer_model_family("non-existing-value")

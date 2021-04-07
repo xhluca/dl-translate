@@ -7,14 +7,14 @@
 ### __init__
 
 ```python
-dlt.TranslationModel.__init__(self, model_or_path: str = 'facebook/mbart-large-50-many-to-many-mmt', tokenizer_path: str = None, device: str = 'auto', model_family: str = None, model_options: dict = None, tokenizer_options: dict = None)
+dlt.TranslationModel.__init__(self, model_or_path: str = 'm2m100', tokenizer_path: str = None, device: str = 'auto', model_family: str = None, model_options: dict = None, tokenizer_options: dict = None)
 ```
 
 *Instantiates a multilingual transformer model for translation.*
 
 | Parameter | Type | Default | Description |
 |-|-|-|-|
-| **model_or_path** | *str* | `facebook/mbart-large-50-many-to-many-mmt` | The path or the name of the model. Equivalent to the first argument of `AutoModel.from_pretrained()`.
+| **model_or_path** | *str* | `m2m100` | The path or the name of the model. Equivalent to the first argument of `AutoModel.from_pretrained()`. You can also specify shorthands ("mbart50" and "m2m100").
 | **tokenizer_path** | *str* | *optional* | The path to the tokenizer. By default, it will be set to `model_or_path`.
 | **device** | *str* | `auto` | "cpu", "gpu" or "auto". If it's set to "auto", will try to select a GPU when available or else fall back to CPU.
 | **model_family** | *str* | *optional* | Either "mbart50" or "m2m100". By default, it will be inferred based on `model_or_path`. Needs to be explicitly set if `model_or_path` is a path.
