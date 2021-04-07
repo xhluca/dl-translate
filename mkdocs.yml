@@ -4,6 +4,7 @@ nav:
   - index.md
   - references.md
   - contributing.md
+  - available_languages.md
 theme: material
 markdown_extensions:
   - pymdownx.highlight
