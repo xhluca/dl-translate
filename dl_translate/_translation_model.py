@@ -1,4 +1,5 @@
 import os
+import json
 from typing import Union, List, Dict
 
 import transformers
@@ -252,6 +253,9 @@ class TranslationModel:
         torch.save(self._transformers_model, os.path.join(path, "weights.pt"))
         self._tokenizer.save_pretrained(path)
 
+        dlt_config = dict(model_family=self.model_family)
+        json.dump(dlt_config, open(os.path.join(path, "dlt_config.json"), "w"))
+
     @classmethod
     def load_obj(cls, path: str = "saved_model", **kwargs):
         """
@@ -261,5 +265,10 @@ class TranslationModel:
         {{params}}
         {{path}} The directory where your torch model and tokenizer are stored
         """
-        load_dir = os.path.join(path, "weights.pt")
-        return cls(model_or_path=load_dir, tokenizer_path=path, **kwargs)
+        config_prev = json.load(open(os.path.join(path, "dlt_config.json"), "rb"))
+        config_prev.update(kwargs)
+        return cls(
+            model_or_path=os.path.join(path, "weights.pt"),
+            tokenizer_path=path,
+            **config_prev,
+        )
