@@ -145,6 +145,39 @@ At the moment, the following models are accepted:
 - `"m2m100"`
 
 
+### Offline usage
+
+Unlike the Google translate or MSFT Translator APIs, this library can be fully used offline. However, you will need to first need to download the packages and models if you want to install them in an offline Python environment.
+
+First, in your terminal, run:
+```bash
+mkdir dlt
+cd dlt
+mkdir libraries
+pip download -d libraries/ dl-translate
+```
+
+Once all the required packages are downloaded, you will need to use huggingface hub to download the files. First run `pip install huggingface-hub`, then, inside Python run:
+```python
+import os
+import huggingface_hub as hub
+
+dirname = hub.snapshot_download("facebook/m2m100_418M")
+os.rename(dirname, "cached_model_m2m100")
+```
+
+Now, move everything in the `dlt` directory to your offline environment. Create a virtual environment and run the following in terminal:
+```bash
+pip install --no-index --find-links libraries/ dl-translate
+```
+
+Now, inside Python, run:
+```python
+import dl_translate as dlt
+
+mt = dlt.TranslationModel("cached_model_m2m100", model_family="m2m100")
+```
+
 ## Advanced
 
 The following section assumes you have knowledge of PyTorch and Huggingface Transformers.
