@@ -115,9 +115,9 @@ print(dlt.utils.get_lang_code_map('mbart50'))  # Dictionary of lang -> code
 
 ### Offline usage
 
-Unlike the Google translate or MSFT Translator APIs, this library can be fully used offline. However, you will need to first need to download the packages and models if you want to install them in an offline Python environment.
+Unlike the Google translate or MSFT Translator APIs, this library can be fully used offline. However, you will need to first download the packages and models, and move them to your offline environment to be installed and loaded inside a venv.
 
-First, in your terminal, run:
+First, run in your terminal:
 ```bash
 mkdir dlt
 cd dlt
@@ -125,7 +125,7 @@ mkdir libraries
 pip download -d libraries/ dl-translate
 ```
 
-Once all the required packages are downloaded, you will need to use huggingface hub to download the files. First run `pip install huggingface-hub`, then, inside Python run:
+Once all the required packages are downloaded, you will need to use huggingface hub to download the files. Install it with `pip install huggingface-hub`. Then, run inside Python:
 ```python
 import os
 import huggingface_hub as hub
@@ -139,13 +139,12 @@ Now, move everything in the `dlt` directory to your offline environment. Create 
 pip install --no-index --find-links libraries/ dl-translate
 ```
 
-Now, inside Python, run:
+Now, run inside Python:
 ```python
 import dl_translate as dlt
 
 mt = dlt.TranslationModel("cached_model_m2m100", model_family="m2m100")
 ```
-
 
 
 ## Advanced
