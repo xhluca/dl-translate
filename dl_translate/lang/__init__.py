@@ -1,2 +1,2 @@
-from .mbart50 import *
-from . import m2m100
+from .m2m100 import *
+from . import m2m100, mbart50

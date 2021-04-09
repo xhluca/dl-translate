@@ -109,6 +109,7 @@ This page gives all the languages available for each model family.
 - Javanese (jv)
 - Georgian (ka)
 - Kazakh (kk)
+- Khmer (km)
 - Central Khmer (km)
 - Kannada (kn)
 - Korean (ko)
