@@ -49,6 +49,7 @@ _PAIRS_M2M100 = (
     ("Javanese", "jv"),
     ("Georgian", "ka"),
     ("Kazakh", "kk"),
+    ("Khmer", "km"),
     ("Central Khmer", "km"),
     ("Kannada", "kn"),
     ("Korean", "ko"),
