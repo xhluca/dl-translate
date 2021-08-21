@@ -1,0 +1,11 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+authors:
+- family-names: "Lu"
+  given-names: "Xing Han"
+  orcid: "https://orcid.org/0000-0001-9027-8425"
+title: "DL Translate: A deep learning-based translation library built on Huggingface transformers"
+version: 0.2.3
+doi: 10.5281/zenodo.5230676
+date-released: 2021-08-21
+url: "https://github.com/xhlulu/dl-translate"
