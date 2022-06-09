@@ -7,10 +7,10 @@
 
 *A deep learning-based translation library built on Huggingface `transformers`*
 
-💻 [GitHub Repository](https://github.com/xhlulu/dl-translate)<br>
+💻 [GitHub Repository](https://github.com/xhluca/dl-translate)<br>
 📚 [Documentation](https://git.io/dlt-docs) / [Readthedocs](https://dl-translate.readthedocs.io)<br>
 🐍 [PyPi project](https://pypi.org/project/dl-translate/)<br>
-🧪 [Colab Demo](https://colab.research.google.com/github/xhlulu/dl-translate/blob/main/demos/colab_demo.ipynb) / [Kaggle Demo](https://www.kaggle.com/xhlulu/dl-translate-demo/)
+🧪 [Colab Demo](https://colab.research.google.com/github/xhluca/dl-translate/blob/main/demos/colab_demo.ipynb) / [Kaggle Demo](https://www.kaggle.com/xhlulu/dl-translate-demo/)
 
 
 
