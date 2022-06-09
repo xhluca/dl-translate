@@ -2,7 +2,7 @@
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.5230676.svg)](https://doi.org/10.5281/zenodo.5230676)
 [![Downloads](https://static.pepy.tech/personalized-badge/dl-translate?period=total&units=abbreviation&left_color=grey&right_color=orange&left_text=Downloads)](https://pepy.tech/project/dl-translate)
-[![License](https://img.shields.io/badge/license-MIT-green)](https://github.com/xhlulu/dl-translate/blob/main/LICENSE)
+[![License](https://img.shields.io/badge/license-MIT-green)](https://github.com/xhluca/dl-translate/blob/main/LICENSE)
 
 
 *A deep learning-based translation library built on Huggingface `transformers`*
