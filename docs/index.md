@@ -3,7 +3,7 @@
 Quick links:
 
 💻 [GitHub Repository](https://github.com/xhlulu/dl-translate)<br>
-📚 [Documentation](https://git.io/dlt-docs) / [Readthedocs](https://dl-translate.readthedocs.io)<br>
+📚 [Documentation](https://xhluca.github.io/dl-translate) / [Readthedocs](https://dl-translate.readthedocs.io)<br>
 🐍 [PyPi project](https://pypi.org/project/dl-translate/)<br>
 🧪 [Colab Demo](https://colab.research.google.com/github/xhlulu/dl-translate/blob/main/demos/colab_demo.ipynb) / [Kaggle Demo](https://www.kaggle.com/xhlulu/dl-translate-demo/)
 
