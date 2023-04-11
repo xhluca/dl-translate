@@ -132,11 +132,11 @@ pip download -d libraries/ dl-translate
 
 Once all the required packages are downloaded, you will need to use huggingface hub to download the files. Install it with `pip install huggingface-hub`. Then, run inside Python:
 ```python
-import os
+import shutil
 import huggingface_hub as hub
 
 dirname = hub.snapshot_download("facebook/m2m100_418M")
-os.rename(dirname, "cached_model_m2m100")
+shutil.copytree(dirname, "cached_model_m2m100")  # Copy to a permanent folder
 ```
 
 Now, move everything in the `dlt` directory to your offline environment. Create a virtual environment and run the following in terminal:
