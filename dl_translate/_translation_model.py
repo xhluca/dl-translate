@@ -24,22 +24,31 @@ def _select_device(device_selection):
     return device
 
 
-def _resolve_lang_codes(source: str, target: str, model_family: str):
+def _resolve_lang_codes(lang: str, name: str, model_family: str):
     def error_message(variable, value):
         return f'Your {variable}="{value}" is not valid. Please run `print(mt.available_languages())` to see which languages are available. Make sure you are using the correct capital letters.'
 
     # If can't find in the lang -> code mapping, assumes it's already a code.
     lang_code_map = utils.get_lang_code_map(model_family)
-    source = lang_code_map.get(source, lang_code_map.get(source.capitalize(), source))
-    target = lang_code_map.get(target, lang_code_map.get(target.capitalize(), target))
+    if lang in lang_code_map:
+        code = lang_code_map[lang]
+    elif lang.capitalize() in lang_code_map:
+        code = lang_code_map[lang.capitalize()]
+    else:
+        lang_upper = lang.upper()
+        lang_code_map_upper = {k.upper(): v for k, v in lang_code_map.items()}
+        
+        if lang_upper in lang_code_map_upper:
+            code = lang_code_map_upper[lang_upper]
+        else:
+            code = lang
+
 
     # If the code is not valid, raises an error
-    if source not in utils.available_codes(model_family):
-        raise ValueError(error_message("source", source))
-    if target not in utils.available_codes(model_family):
-        raise ValueError(error_message("target", target))
+    if code not in utils.available_codes(model_family):
+        raise ValueError(error_message(name, code))
 
-    return source, target
+    return code
 
 
 def _resolve_tokenizer(model_family):
@@ -149,7 +158,9 @@ class TranslationModel:
         if generation_options is None:
             generation_options = {}
 
-        source, target = _resolve_lang_codes(source, target, self.model_family)
+        source = _resolve_lang_codes(source, "source", self.model_family)
+        target = _resolve_lang_codes(target, "target", self.model_family)
+
         self._tokenizer.src_lang = source
 
         original_text_type = type(text)
