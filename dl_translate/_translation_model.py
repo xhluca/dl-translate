@@ -7,6 +7,7 @@ import torch
 from tqdm.auto import tqdm
 
 from . import utils
+from .utils import _infer_model_family, _infer_model_or_path
 
 
 def _select_device(device_selection):
@@ -45,6 +46,7 @@ def _resolve_tokenizer(model_family):
     di = {
         "mbart50": transformers.MBart50TokenizerFast,
         "m2m100": transformers.M2M100Tokenizer,
+        "nllb200": transformers.AutoTokenizer,
     }
     if model_family in di:
         return di[model_family]
@@ -57,37 +59,13 @@ def _resolve_transformers_model(model_family):
     di = {
         "mbart50": transformers.MBartForConditionalGeneration,
         "m2m100": transformers.M2M100ForConditionalGeneration,
+        "nllb200": transformers.AutoModelForSeq2SeqLM,
     }
     if model_family in di:
         return di[model_family]
     else:
         error_msg = f"{model_family} is not a valid value for model_family. Please choose model_family to be equal to one of the following values: {list(di.keys())}"
         raise ValueError(error_msg)
-
-
-def _infer_model_family(model_or_path):
-    di = {
-        "facebook/mbart-large-50-many-to-many-mmt": "mbart50",
-        "facebook/m2m100_418M": "m2m100",
-        "facebook/m2m100_1.2B": "m2m100",
-    }
-
-    if model_or_path in di:
-        return di[model_or_path]
-    else:
-        error_msg = f'Unable to infer the model_family from "{model_or_path}". Try explicitly setting the value of model_family to "mbart50" or "m2m100".'
-        raise ValueError(error_msg)
-
-
-def _infer_model_or_path(model_or_path):
-    di = {
-        "mbart50": "facebook/mbart-large-50-many-to-many-mmt",
-        "m2m100": "facebook/m2m100_418M",
-        "m2m100-small": "facebook/m2m100_418M",
-        "m2m100-medium": "facebook/m2m100_1.2B",
-    }
-
-    return di.get(model_or_path, model_or_path)
 
 
 class TranslationModel:

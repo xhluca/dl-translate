@@ -20,8 +20,8 @@ setuptools.setup(
     packages=setuptools.find_packages(),
     python_requires=">=3.6",
     install_requires=[
-        "transformers>=4.4.0",
-        "torch",
+        "transformers>=4.30.2",
+        "torch>=2.0.0",
         "sentencepiece",
         "protobuf",
         "tqdm",
