@@ -26,12 +26,12 @@ def _select_device(device_selection):
 
 def _resolve_lang_codes(source: str, target: str, model_family: str):
     def error_message(variable, value):
-        return f'Your {variable}="{value}" is not valid. Please run `print(mt.available_languages())` to see which languages are available.'
+        return f'Your {variable}="{value}" is not valid. Please run `print(mt.available_languages())` to see which languages are available. Make sure you are using the correct capital letters.'
 
     # If can't find in the lang -> code mapping, assumes it's already a code.
     lang_code_map = utils.get_lang_code_map(model_family)
-    source = lang_code_map.get(source.capitalize(), source)
-    target = lang_code_map.get(target.capitalize(), target)
+    source = lang_code_map.get(source, lang_code_map.get(source.capitalize(), source))
+    target = lang_code_map.get(target, lang_code_map.get(target.capitalize(), target))
 
     # If the code is not valid, raises an error
     if source not in utils.available_codes(model_family):

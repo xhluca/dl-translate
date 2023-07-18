@@ -30,6 +30,23 @@ def test_resolve_lang_codes_m2m100():
         assert t == "en"
 
 
+def test_resolve_lang_codes_m2m100():
+    sources = [dlt.lang.nllb200.FRENCH, "fra_Latn", "French"]
+    targets = [dlt.lang.nllb200.ENGLISH, "eng_Latn", "English"]
+
+    for source, target in zip(sources, targets):
+        s, t = _resolve_lang_codes(source, target, "nllb200")
+        assert s == "fra_Latn"
+        assert t == "eng_Latn"
+    
+    sources = ["Central Kanuri (Latin script)"]
+    targets = ["Ta'izzi-Adeni Arabic"]
+    for source, target in zip(sources, targets):
+        s, t = _resolve_lang_codes(source, target, "nllb200")
+        assert s == "knc_Latn"
+        assert t == "acq_Arab"
+
+
 def test_select_device():
     assert _select_device("cpu") == torch.device("cpu")
     assert _select_device("gpu") == torch.device("cuda")
