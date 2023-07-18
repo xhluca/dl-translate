@@ -7,6 +7,7 @@ import torch
 from tqdm.auto import tqdm
 
 from . import utils
+from .utils import _infer_model_family, _infer_model_or_path
 
 
 def _select_device(device_selection):
@@ -23,28 +24,37 @@ def _select_device(device_selection):
     return device
 
 
-def _resolve_lang_codes(source: str, target: str, model_family: str):
+def _resolve_lang_codes(lang: str, name: str, model_family: str):
     def error_message(variable, value):
-        return f'Your {variable}="{value}" is not valid. Please run `print(mt.available_languages())` to see which languages are available.'
+        return f'Your {variable}="{value}" is not valid. Please run `print(mt.available_languages())` to see which languages are available. Make sure you are using the correct capital letters.'
 
     # If can't find in the lang -> code mapping, assumes it's already a code.
     lang_code_map = utils.get_lang_code_map(model_family)
-    source = lang_code_map.get(source.capitalize(), source)
-    target = lang_code_map.get(target.capitalize(), target)
+    if lang in lang_code_map:
+        code = lang_code_map[lang]
+    elif lang.capitalize() in lang_code_map:
+        code = lang_code_map[lang.capitalize()]
+    else:
+        lang_upper = lang.upper()
+        lang_code_map_upper = {k.upper(): v for k, v in lang_code_map.items()}
+
+        if lang_upper in lang_code_map_upper:
+            code = lang_code_map_upper[lang_upper]
+        else:
+            code = lang
 
     # If the code is not valid, raises an error
-    if source not in utils.available_codes(model_family):
-        raise ValueError(error_message("source", source))
-    if target not in utils.available_codes(model_family):
-        raise ValueError(error_message("target", target))
+    if code not in utils.available_codes(model_family):
+        raise ValueError(error_message(name, code))
 
-    return source, target
+    return code
 
 
 def _resolve_tokenizer(model_family):
     di = {
         "mbart50": transformers.MBart50TokenizerFast,
         "m2m100": transformers.M2M100Tokenizer,
+        "nllb200": transformers.AutoTokenizer,
     }
     if model_family in di:
         return di[model_family]
@@ -57,37 +67,13 @@ def _resolve_transformers_model(model_family):
     di = {
         "mbart50": transformers.MBartForConditionalGeneration,
         "m2m100": transformers.M2M100ForConditionalGeneration,
+        "nllb200": transformers.AutoModelForSeq2SeqLM,
     }
     if model_family in di:
         return di[model_family]
     else:
         error_msg = f"{model_family} is not a valid value for model_family. Please choose model_family to be equal to one of the following values: {list(di.keys())}"
         raise ValueError(error_msg)
-
-
-def _infer_model_family(model_or_path):
-    di = {
-        "facebook/mbart-large-50-many-to-many-mmt": "mbart50",
-        "facebook/m2m100_418M": "m2m100",
-        "facebook/m2m100_1.2B": "m2m100",
-    }
-
-    if model_or_path in di:
-        return di[model_or_path]
-    else:
-        error_msg = f'Unable to infer the model_family from "{model_or_path}". Try explicitly setting the value of model_family to "mbart50" or "m2m100".'
-        raise ValueError(error_msg)
-
-
-def _infer_model_or_path(model_or_path):
-    di = {
-        "mbart50": "facebook/mbart-large-50-many-to-many-mmt",
-        "m2m100": "facebook/m2m100_418M",
-        "m2m100-small": "facebook/m2m100_418M",
-        "m2m100-medium": "facebook/m2m100_1.2B",
-    }
-
-    return di.get(model_or_path, model_or_path)
 
 
 class TranslationModel:
@@ -171,7 +157,9 @@ class TranslationModel:
         if generation_options is None:
             generation_options = {}
 
-        source, target = _resolve_lang_codes(source, target, self.model_family)
+        source = _resolve_lang_codes(source, "source", self.model_family)
+        target = _resolve_lang_codes(target, "target", self.model_family)
+
         self._tokenizer.src_lang = source
 
         original_text_type = type(text)
@@ -184,6 +172,7 @@ class TranslationModel:
         generation_options.setdefault(
             "forced_bos_token_id", self._tokenizer.lang_code_to_id[target]
         )
+        generation_options.setdefault("max_new_tokens", 512)
 
         data_loader = torch.utils.data.DataLoader(text, batch_size=batch_size)
         output_text = []

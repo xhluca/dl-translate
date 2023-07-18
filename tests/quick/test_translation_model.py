@@ -15,7 +15,8 @@ def test_resolve_lang_codes_mbart50():
     targets = [dlt.lang.ENGLISH, "en_XX", "English"]
 
     for source, target in zip(sources, targets):
-        s, t = _resolve_lang_codes(source, target, "mbart50")
+        s = _resolve_lang_codes(source, "source", "mbart50")
+        t = _resolve_lang_codes(target, "target", "mbart50")
         assert s == "fr_XX"
         assert t == "en_XX"
 
@@ -25,9 +26,29 @@ def test_resolve_lang_codes_m2m100():
     targets = [dlt.lang.m2m100.ENGLISH, "en", "English"]
 
     for source, target in zip(sources, targets):
-        s, t = _resolve_lang_codes(source, target, "m2m100")
+        s = _resolve_lang_codes(source, "source", "m2m100")
+        t = _resolve_lang_codes(target, "target", "m2m100")
         assert s == "fr"
         assert t == "en"
+
+
+def test_resolve_lang_codes_m2m100():
+    sources = [dlt.lang.nllb200.FRENCH, "fra_Latn", "French"]
+    targets = [dlt.lang.nllb200.ENGLISH, "eng_Latn", "English"]
+
+    for source, target in zip(sources, targets):
+        s = _resolve_lang_codes(source, "source", "nllb200")
+        t = _resolve_lang_codes(target, "target", "nllb200")
+        assert s == "fra_Latn"
+        assert t == "eng_Latn"
+
+    sources = ["Central Kanuri (Latin script)"]
+    targets = ["Ta'izzi-Adeni Arabic"]
+    for source, target in zip(sources, targets):
+        s = _resolve_lang_codes(source, "source", "nllb200")
+        t = _resolve_lang_codes(target, "target", "nllb200")
+        assert s == "knc_Latn"
+        assert t == "acq_Arab"
 
 
 def test_select_device():

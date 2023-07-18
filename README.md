@@ -8,7 +8,7 @@
 *A deep learning-based translation library built on Huggingface `transformers`*
 
 💻 [GitHub Repository](https://github.com/xhluca/dl-translate)<br>
-📚 [Documentation](https://xhluca.github.io/dl-translate) / [Readthedocs](https://dl-translate.readthedocs.io)<br>
+📚 [Documentation](https://xhluca.github.io/dl-translate)<br>
 🐍 [PyPi project](https://pypi.org/project/dl-translate/)<br>
 🧪 [Colab Demo](https://colab.research.google.com/github/xhluca/dl-translate/blob/main/demos/colab_demo.ipynb) / [Kaggle Demo](https://www.kaggle.com/xhlulu/dl-translate-demo/)
 
@@ -58,24 +58,34 @@ By default, the value will be `device="auto"`, which means it will use a GPU if 
 
 ### Choosing a different model
 
-Two model families are available at the moment: [m2m100](https://huggingface.co/transformers/model_doc/m2m_100.html) and [mBART-50 Large](https://huggingface.co/transformers/master/model_doc/mbart.html), which respective allow translation across over 100 languages and 50 languages. By default, the model will select `m2m100`, but you can also explicitly choose the model by specifying the shorthand (`"m2m100"` or `"mbart50"`) or the full repository name (e.g. `"facebook/m2m100_418M"`). For example:
+By default, the `m2m100` model will be used. However, there are a few options:
 
+* [mBART-50 Large](https://huggingface.co/transformers/master/model_doc/mbart.html):  Allows translations across 50 languages.
+* [m2m100](https://huggingface.co/transformers/model_doc/m2m_100.html): Allows translations across 100 languages.
+* [nllb-200](https://huggingface.co/docs/transformers/model_doc/nllb) (New in v0.3): Allows translations across 200 languages, and is faster than m2m100 (On RTX A6000, we can see speed up of 3x).
+
+Here's an example:
 ```python
-# The following ways are equivalent
-mt = dlt.TranslationModel("m2m100")  # Default
-mt = dlt.TranslationModel("facebook/m2m100_418M")
+# The default approval
+mt = dlt.TranslationModel("m2m100")  # Shorthand
+mt = dlt.TranslationModel("facebook/m2m100_418M")  # Huggingface repo
 
-# The following ways are equivalent
+# If you want to use mBART-50 Large
 mt = dlt.TranslationModel("mbart50")
 mt = dlt.TranslationModel("facebook/mbart-large-50-many-to-many-mmt")
+
+# Or NLLB-200 (faster and has 200 languages)
+mt = dlt.TranslationModel("nllb200")
+mt = dlt.TranslationModel("facebook/nllb-200-distilled-600M")
 ```
 
 Note that the language code will change depending on the model family. To find out the correct language codes, please read the doc page on available languages or run `mt.available_codes()`.
 
-By default, `dlt.TranslationModel` will download the model from the huggingface repo for [mbart50](https://huggingface.co/facebook/mbart-large-50-one-to-many-mmt) or [m2m100](https://huggingface.co/facebook/m2m100_418M) and cache it. It's possible to load the model from a path or a model with a similar format, but you will need to specify the `model_family`:
+By default, `dlt.TranslationModel` will download the model from the huggingface repo for [mbart50](https://huggingface.co/facebook/mbart-large-50-one-to-many-mmt), [m2m100](https://huggingface.co/facebook/m2m100_418M), or [nllb200](https://huggingface.co/facebook/nllb-200-distilled-600M) and cache it. It's possible to load the model from a path or a model with a similar format, but you will need to specify the `model_family`:
 ```python
 mt = dlt.TranslationModel("/path/to/model/directory/", model_family="mbart50")
 mt = dlt.TranslationModel("facebook/m2m100_1.2B", model_family="m2m100")
+mt = dlt.TranslationModel("facebook/nllb-200-distilled-600M", model_family="nllb200")
 ```
 
 Notes:
@@ -114,8 +124,8 @@ An alternative to `mt.available_languages()` is the `dlt.utils` module. You can 
 
 ```python
 print(dlt.utils.available_languages('mbart50'))  # All languages that you can use
-print(dlt.utils.available_codes('mbart50'))  # Code corresponding to each language accepted
-print(dlt.utils.get_lang_code_map('mbart50'))  # Dictionary of lang -> code
+print(dlt.utils.available_codes('m2m100'))  # Code corresponding to each language accepted
+print(dlt.utils.get_lang_code_map('nllb200'))  # Dictionary of lang -> code
 ```
 
 ### Offline usage
@@ -159,7 +169,7 @@ If you have knowledge of PyTorch and Huggingface Transformers, you can access ad
 * **Interacting with underlying model and tokenizer**: When initializing `model`, you can pass in arguments for the underlying BART model and tokenizer with `model_options` and `tokenizer_options` respectively. You can also access the underlying `transformers` with `mt.get_transformers_model()`.
 * **Keyword arguments for the `generate()` method**: When running `mt.translate`, you can also give `generation_options` that is passed to the `generate()` method of the underlying transformer model.
 
-For more information, please visit the [advanced section of the user guide](https://xhluca.github.io/dl-translate/#advanced) (also available in the [readthedocs version](https://dl-translate.readthedocs.io/en/latest/#advanced)).
+For more information, please visit the [advanced section of the user guide](https://xhluca.github.io/dl-translate/#advanced).
 
 ## Acknowledgement
 
@@ -185,6 +195,19 @@ For more information, please visit the [advanced section of the user guide](http
         primaryClass={cs.CL}
     }
    ```
+
+3. The [no language left behind](https://arxiv.org/abs/2207.04672) model, which extends NMT to 200+ languages. You can cite it here:
+    ```
+    @misc{nllbteam2022language,
+        title={No Language Left Behind: Scaling Human-Centered Machine Translation}, 
+        author={NLLB Team and Marta R. Costa-jussà and James Cross and Onur Çelebi and Maha Elbayad and Kenneth Heafield and Kevin Heffernan and Elahe Kalbassi and Janice Lam and Daniel Licht and Jean Maillard and Anna Sun and Skyler Wang and Guillaume Wenzek and Al Youngblood and Bapi Akula and Loic Barrault and Gabriel Mejia Gonzalez and Prangthip Hansanti and John Hoffman and Semarley Jarrett and Kaushik Ram Sadagopan and Dirk Rowe and Shannon Spruit and Chau Tran and Pierre Andrews and Necip Fazil Ayan and Shruti Bhosale and Sergey Edunov and Angela Fan and Cynthia Gao and Vedanuj Goswami and Francisco Guzmán and Philipp Koehn and Alexandre Mourachko and Christophe Ropers and Safiyyah Saleem and Holger Schwenk and Jeff Wang},
+        year={2022},
+        eprint={2207.04672},
+        archivePrefix={arXiv},
+        primaryClass={cs.CL}
+    }
+    ```
+
 
 `dlt` is a wrapper with useful `utils` to save you time. For huggingface's `transformers`, the following snippet is shown as an example:
 ```python

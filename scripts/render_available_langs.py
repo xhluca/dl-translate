@@ -10,12 +10,14 @@ def load_json(name):
 
 
 template_values = {}
-for name in ["m2m100", "mbart50"]:
+for name in ["m2m100", "mbart50", "nllb200"]:
     content = ""
     di = load_json(name)
 
+    content += "| Language Name | Code |\n"
+    content += "| --- | --- |\n"
     for key, val in di.items():
-        content += f"- {key} ({val})\n"
+        content += f"| {key} | {val} |\n"
 
     template_values[name] = content
 
