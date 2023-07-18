@@ -3,7 +3,7 @@
 Quick links:
 
 💻 [GitHub Repository](https://github.com/xhlulu/dl-translate)<br>
-📚 [Documentation](https://xhluca.github.io/dl-translate) / [Readthedocs](https://dl-translate.readthedocs.io)<br>
+📚 [Documentation](https://xhluca.github.io/dl-translate)<br>
 🐍 [PyPi project](https://pypi.org/project/dl-translate/)<br>
 🧪 [Colab Demo](https://colab.research.google.com/github/xhlulu/dl-translate/blob/main/demos/colab_demo.ipynb) / [Kaggle Demo](https://www.kaggle.com/xhlulu/dl-translate-demo/)
 
@@ -53,43 +53,41 @@ mt = dlt.TranslationModel(device="gpu")  # Force you to use a GPU
 mt = dlt.TranslationModel(device="cuda:2")  # Use the 3rd GPU available
 ```
 
-### Changing the model you are loading
+### Choosing a different model
 
-Two model families are available at the moment: [m2m100](https://huggingface.co/transformers/model_doc/m2m_100.html) and [mBART-50 Large](https://huggingface.co/transformers/master/model_doc/mbart.html), which respective allow translation across over 100 languages and 50 languages. By default, the model will select `m2m100`, but you can also explicitly choose the model by specifying the shorthand (`"m2m100"` or `"mbart50"`) or the full repository name (e.g. `"facebook/m2m100_418M"`). For example:
+By default, the `m2m100` model will be used. However, there are a few options:
 
+* [mBART-50 Large](https://huggingface.co/transformers/master/model_doc/mbart.html):  Allows translations across 50 languages.
+* [m2m100](https://huggingface.co/transformers/model_doc/m2m_100.html): Allows translations across 100 languages.
+* [nllb-200](https://huggingface.co/docs/transformers/model_doc/nllb) (New in v0.3): Allows translations across 200 languages, and is faster than m2m100 (On RTX A6000, we can see speed up of 3x).
+
+Here's an example:
 ```python
-# The following ways are equivalent
-mt = dlt.TranslationModel("m2m100")  # Default
-mt = dlt.TranslationModel("facebook/m2m100_418M")
+# The default approval
+mt = dlt.TranslationModel("m2m100")  # Shorthand
+mt = dlt.TranslationModel("facebook/m2m100_418M")  # Huggingface repo
 
-# The following ways are equivalent
+# If you want to use mBART-50 Large
 mt = dlt.TranslationModel("mbart50")
 mt = dlt.TranslationModel("facebook/mbart-large-50-many-to-many-mmt")
+
+# Or NLLB-200 (faster and has 200 languages)
+mt = dlt.TranslationModel("nllb200")
+mt = dlt.TranslationModel("facebook/nllb-200-distilled-600M")
 ```
 
 Note that the language code will change depending on the model family. To find out the correct language codes, please read the doc page on available languages or run `mt.available_codes()`.
 
-### Loading from a path
-
-By default, `dlt.TranslationModel` will download the model from the [huggingface repo](https://huggingface.co/facebook/mbart-large-50-one-to-many-mmt) and cache it. If your model is stored locally, you can also directly load that model, but in that case you will need to specify the model family (e.g. `"mbart50"` and `"m2m100"`).
-
+By default, `dlt.TranslationModel` will download the model from the huggingface repo for [mbart50](https://huggingface.co/facebook/mbart-large-50-one-to-many-mmt), [m2m100](https://huggingface.co/facebook/m2m100_418M), or [nllb200](https://huggingface.co/facebook/nllb-200-distilled-600M) and cache it. It's possible to load the model from a path or a model with a similar format, but you will need to specify the `model_family`:
 ```python
 mt = dlt.TranslationModel("/path/to/model/directory/", model_family="mbart50")
-# or
-mt = dlt.TranslationModel("/path/to/model/directory/", model_family="m2m100")
-```
-Make sure that your tokenizer is also stored in the same directory if you use this approach.
-
-### Using a different model
-
-You can also choose another model that has the same format as [mbart50](https://huggingface.co/models?filter=mbart-50) or [m2m100](https://huggingface.co/models?search=facebook/m2m100) e.g.
-```python
-mt = dlt.TranslationModel("facebook/mbart-large-50-one-to-many-mmt", model_family="mbart50")
-# or
 mt = dlt.TranslationModel("facebook/m2m100_1.2B", model_family="m2m100")
+mt = dlt.TranslationModel("facebook/nllb-200-distilled-600M", model_family="nllb200")
 ```
 
-Note that the available languages will change if you do this, so you will not be able to leverage `dlt.lang` or `dlt.utils` and the `mt.available_languages()` might also return the incorrect value.
+Notes:
+* Make sure your tokenizer is also stored in the same directory if you load from a file. 
+* The available languages will change if you select a different model, so you will not be able to leverage `dlt.lang` or `dlt.utils`.
 
 ### Breaking down into sentences
 
@@ -143,6 +141,7 @@ print(dlt.utils.available_languages('m2m100'))  # write the name of the model fa
 At the moment, the following models are accepted:
 - `"mbart50"`
 - `"m2m100"`
+- `"nllb200"`
 
 ### Offline usage
 

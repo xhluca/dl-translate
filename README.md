@@ -8,7 +8,7 @@
 *A deep learning-based translation library built on Huggingface `transformers`*
 
 💻 [GitHub Repository](https://github.com/xhluca/dl-translate)<br>
-📚 [Documentation](https://xhluca.github.io/dl-translate) / [Readthedocs](https://dl-translate.readthedocs.io)<br>
+📚 [Documentation](https://xhluca.github.io/dl-translate)<br>
 🐍 [PyPi project](https://pypi.org/project/dl-translate/)<br>
 🧪 [Colab Demo](https://colab.research.google.com/github/xhluca/dl-translate/blob/main/demos/colab_demo.ipynb) / [Kaggle Demo](https://www.kaggle.com/xhlulu/dl-translate-demo/)
 
@@ -81,7 +81,7 @@ mt = dlt.TranslationModel("facebook/nllb-200-distilled-600M")
 
 Note that the language code will change depending on the model family. To find out the correct language codes, please read the doc page on available languages or run `mt.available_codes()`.
 
-By default, `dlt.TranslationModel` will download the model from the huggingface repo for [mbart50](https://huggingface.co/facebook/mbart-large-50-one-to-many-mmt) or [m2m100](https://huggingface.co/facebook/m2m100_418M) and cache it. It's possible to load the model from a path or a model with a similar format, but you will need to specify the `model_family`:
+By default, `dlt.TranslationModel` will download the model from the huggingface repo for [mbart50](https://huggingface.co/facebook/mbart-large-50-one-to-many-mmt), [m2m100](https://huggingface.co/facebook/m2m100_418M), or [nllb200](https://huggingface.co/facebook/nllb-200-distilled-600M) and cache it. It's possible to load the model from a path or a model with a similar format, but you will need to specify the `model_family`:
 ```python
 mt = dlt.TranslationModel("/path/to/model/directory/", model_family="mbart50")
 mt = dlt.TranslationModel("facebook/m2m100_1.2B", model_family="m2m100")
@@ -169,7 +169,7 @@ If you have knowledge of PyTorch and Huggingface Transformers, you can access ad
 * **Interacting with underlying model and tokenizer**: When initializing `model`, you can pass in arguments for the underlying BART model and tokenizer with `model_options` and `tokenizer_options` respectively. You can also access the underlying `transformers` with `mt.get_transformers_model()`.
 * **Keyword arguments for the `generate()` method**: When running `mt.translate`, you can also give `generation_options` that is passed to the `generate()` method of the underlying transformer model.
 
-For more information, please visit the [advanced section of the user guide](https://xhluca.github.io/dl-translate/#advanced) (also available in the [readthedocs version](https://dl-translate.readthedocs.io/en/latest/#advanced)).
+For more information, please visit the [advanced section of the user guide](https://xhluca.github.io/dl-translate/#advanced).
 
 ## Acknowledgement
 
