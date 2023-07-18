@@ -41,7 +41,7 @@ def test_resolve_lang_codes_m2m100():
         t = _resolve_lang_codes(target, "target", "nllb200")
         assert s == "fra_Latn"
         assert t == "eng_Latn"
-    
+
     sources = ["Central Kanuri (Latin script)"]
     targets = ["Ta'izzi-Adeni Arabic"]
     for source, target in zip(sources, targets):

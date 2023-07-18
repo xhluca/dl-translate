@@ -37,12 +37,11 @@ def _resolve_lang_codes(lang: str, name: str, model_family: str):
     else:
         lang_upper = lang.upper()
         lang_code_map_upper = {k.upper(): v for k, v in lang_code_map.items()}
-        
+
         if lang_upper in lang_code_map_upper:
             code = lang_code_map_upper[lang_upper]
         else:
             code = lang
-
 
     # If the code is not valid, raises an error
     if code not in utils.available_codes(model_family):
@@ -173,6 +172,7 @@ class TranslationModel:
         generation_options.setdefault(
             "forced_bos_token_id", self._tokenizer.lang_code_to_id[target]
         )
+        generation_options.setdefault("max_new_tokens", 512)
 
         data_loader = torch.utils.data.DataLoader(text, batch_size=batch_size)
         output_text = []
