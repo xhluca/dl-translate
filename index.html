@@ -1,0 +1,767 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+      
+        <link rel="next" href="references/">
+      
+      
+      <link rel="icon" href="assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.2.7">
+    
+    
+      
+        <title>DL Translate</title>
+      
+    
+    
+      <link rel="stylesheet" href="assets/stylesheets/main.046329b4.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#user-guide" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="." title="DL Translate" class="md-header__button md-logo" aria-label="DL Translate" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            DL Translate
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              User Guide
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/xhluca/dl-translate" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="." title="DL Translate" class="md-nav__button md-logo" aria-label="DL Translate" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    DL Translate
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/xhluca/dl-translate" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    User Guide
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="." class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    User Guide
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#quickstart" class="md-nav__link">
+    Quickstart
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#usage" class="md-nav__link">
+    Usage
+  </a>
+  
+    <nav class="md-nav" aria-label="Usage">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#selecting-a-device" class="md-nav__link">
+    Selecting a device
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#choosing-a-different-model" class="md-nav__link">
+    Choosing a different model
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#breaking-down-into-sentences" class="md-nav__link">
+    Breaking down into sentences
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#batch-size-and-verbosity-when-using-translate" class="md-nav__link">
+    Batch size and verbosity when using translate
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dltutils-module" class="md-nav__link">
+    dlt.utils module
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#offline-usage" class="md-nav__link">
+    Offline usage
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#advanced" class="md-nav__link">
+    Advanced
+  </a>
+  
+    <nav class="md-nav" aria-label="Advanced">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#saving-and-loading" class="md-nav__link">
+    Saving and loading
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#interacting-with-underlying-model-and-tokenizer" class="md-nav__link">
+    Interacting with underlying model and tokenizer
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#keyword-arguments-for-the-generate-method-of-the-underlying-model" class="md-nav__link">
+    Keyword arguments for the generate() method of the underlying model
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="references/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    API Reference
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="contributing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Contributions
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="available_languages/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Languages Available
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#quickstart" class="md-nav__link">
+    Quickstart
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#usage" class="md-nav__link">
+    Usage
+  </a>
+  
+    <nav class="md-nav" aria-label="Usage">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#selecting-a-device" class="md-nav__link">
+    Selecting a device
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#choosing-a-different-model" class="md-nav__link">
+    Choosing a different model
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#breaking-down-into-sentences" class="md-nav__link">
+    Breaking down into sentences
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#batch-size-and-verbosity-when-using-translate" class="md-nav__link">
+    Batch size and verbosity when using translate
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dltutils-module" class="md-nav__link">
+    dlt.utils module
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#offline-usage" class="md-nav__link">
+    Offline usage
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#advanced" class="md-nav__link">
+    Advanced
+  </a>
+  
+    <nav class="md-nav" aria-label="Advanced">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#saving-and-loading" class="md-nav__link">
+    Saving and loading
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#interacting-with-underlying-model-and-tokenizer" class="md-nav__link">
+    Interacting with underlying model and tokenizer
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#keyword-arguments-for-the-generate-method-of-the-underlying-model" class="md-nav__link">
+    Keyword arguments for the generate() method of the underlying model
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+<h1 id="user-guide">User Guide</h1>
+<p>Quick links:</p>
+<p>💻 <a href="https://github.com/xhlulu/dl-translate">GitHub Repository</a><br>
+📚 <a href="https://xhluca.github.io/dl-translate">Documentation</a><br>
+🐍 <a href="https://pypi.org/project/dl-translate/">PyPi project</a><br>
+🧪 <a href="https://colab.research.google.com/github/xhlulu/dl-translate/blob/main/demos/colab_demo.ipynb">Colab Demo</a> / <a href="https://www.kaggle.com/xhlulu/dl-translate-demo/">Kaggle Demo</a></p>
+<h2 id="quickstart">Quickstart</h2>
+<p>Install the library with pip:
+<div class="highlight"><pre><span></span><code>pip install dl-translate
+</code></pre></div></p>
+<p>To translate some text:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">dl_translate</span> <span class="k">as</span> <span class="nn">dlt</span>
+
+<span class="n">mt</span> <span class="o">=</span> <span class="n">dlt</span><span class="o">.</span><span class="n">TranslationModel</span><span class="p">()</span>  <span class="c1"># Slow when you load it for the first time</span>
+
+<span class="n">text_hi</span> <span class="o">=</span> <span class="s2">&quot;संयुक्त राष्ट्र के प्रमुख का कहना है कि सीरिया में कोई सैन्य समाधान नहीं है&quot;</span>
+<span class="n">mt</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">text_hi</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="n">dlt</span><span class="o">.</span><span class="n">lang</span><span class="o">.</span><span class="n">HINDI</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="n">dlt</span><span class="o">.</span><span class="n">lang</span><span class="o">.</span><span class="n">ENGLISH</span><span class="p">)</span>
+</code></pre></div>
+<p>Above, you can see that <code>dlt.lang</code> contains variables representing each of the 50 available languages with auto-complete support. Alternatively, you can specify the language (e.g. "Arabic") or the language code (e.g. "fr" for French):
+<div class="highlight"><pre><span></span><code><span class="n">text_ar</span> <span class="o">=</span> <span class="s2">&quot;الأمين العام للأمم المتحدة يقول إنه لا يوجد حل عسكري في سوريا.&quot;</span>
+<span class="n">mt</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">text_ar</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="s2">&quot;Arabic&quot;</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="s2">&quot;fr&quot;</span><span class="p">)</span>
+</code></pre></div></p>
+<p>If you want to verify whether a language is available, you can check it:
+<div class="highlight"><pre><span></span><code><span class="nb">print</span><span class="p">(</span><span class="n">mt</span><span class="o">.</span><span class="n">available_languages</span><span class="p">())</span>  <span class="c1"># All languages that you can use</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">mt</span><span class="o">.</span><span class="n">available_codes</span><span class="p">())</span>  <span class="c1"># Code corresponding to each language accepted</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">mt</span><span class="o">.</span><span class="n">get_lang_code_map</span><span class="p">())</span>  <span class="c1"># Dictionary of lang -&gt; code</span>
+</code></pre></div></p>
+<h2 id="usage">Usage</h2>
+<h3 id="selecting-a-device">Selecting a device</h3>
+<p>When you load the model, you can specify the device using the <code>device</code> argument. By default, the value will be <code>device="auto"</code>, which means it will use a GPU if possible. You can also explicitly set <code>device="cpu"</code> or <code>device="gpu"</code>, or some other strings accepted by <a href="https://pytorch.org/docs/stable/tensor_attributes.html#torch.torch.device"><code>torch.device()</code></a>. <strong>In general, it is recommend to use a GPU if you want a reasonable processing time.</strong></p>
+<div class="highlight"><pre><span></span><code><span class="n">mt</span> <span class="o">=</span> <span class="n">dlt</span><span class="o">.</span><span class="n">TranslationModel</span><span class="p">(</span><span class="n">device</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span><span class="p">)</span>  <span class="c1"># Automatically select device</span>
+<span class="n">mt</span> <span class="o">=</span> <span class="n">dlt</span><span class="o">.</span><span class="n">TranslationModel</span><span class="p">(</span><span class="n">device</span><span class="o">=</span><span class="s2">&quot;cpu&quot;</span><span class="p">)</span>  <span class="c1"># Force you to use a CPU</span>
+<span class="n">mt</span> <span class="o">=</span> <span class="n">dlt</span><span class="o">.</span><span class="n">TranslationModel</span><span class="p">(</span><span class="n">device</span><span class="o">=</span><span class="s2">&quot;gpu&quot;</span><span class="p">)</span>  <span class="c1"># Force you to use a GPU</span>
+<span class="n">mt</span> <span class="o">=</span> <span class="n">dlt</span><span class="o">.</span><span class="n">TranslationModel</span><span class="p">(</span><span class="n">device</span><span class="o">=</span><span class="s2">&quot;cuda:2&quot;</span><span class="p">)</span>  <span class="c1"># Use the 3rd GPU available</span>
+</code></pre></div>
+<h3 id="choosing-a-different-model">Choosing a different model</h3>
+<p>By default, the <code>m2m100</code> model will be used. However, there are a few options:</p>
+<ul>
+<li><a href="https://huggingface.co/transformers/master/model_doc/mbart.html">mBART-50 Large</a>:  Allows translations across 50 languages.</li>
+<li><a href="https://huggingface.co/transformers/model_doc/m2m_100.html">m2m100</a>: Allows translations across 100 languages.</li>
+<li><a href="https://huggingface.co/docs/transformers/model_doc/nllb">nllb-200</a> (New in v0.3): Allows translations across 200 languages, and is faster than m2m100 (On RTX A6000, we can see speed up of 3x).</li>
+</ul>
+<p>Here's an example:
+<div class="highlight"><pre><span></span><code><span class="c1"># The default approval</span>
+<span class="n">mt</span> <span class="o">=</span> <span class="n">dlt</span><span class="o">.</span><span class="n">TranslationModel</span><span class="p">(</span><span class="s2">&quot;m2m100&quot;</span><span class="p">)</span>  <span class="c1"># Shorthand</span>
+<span class="n">mt</span> <span class="o">=</span> <span class="n">dlt</span><span class="o">.</span><span class="n">TranslationModel</span><span class="p">(</span><span class="s2">&quot;facebook/m2m100_418M&quot;</span><span class="p">)</span>  <span class="c1"># Huggingface repo</span>
+
+<span class="c1"># If you want to use mBART-50 Large</span>
+<span class="n">mt</span> <span class="o">=</span> <span class="n">dlt</span><span class="o">.</span><span class="n">TranslationModel</span><span class="p">(</span><span class="s2">&quot;mbart50&quot;</span><span class="p">)</span>
+<span class="n">mt</span> <span class="o">=</span> <span class="n">dlt</span><span class="o">.</span><span class="n">TranslationModel</span><span class="p">(</span><span class="s2">&quot;facebook/mbart-large-50-many-to-many-mmt&quot;</span><span class="p">)</span>
+
+<span class="c1"># Or NLLB-200 (faster and has 200 languages)</span>
+<span class="n">mt</span> <span class="o">=</span> <span class="n">dlt</span><span class="o">.</span><span class="n">TranslationModel</span><span class="p">(</span><span class="s2">&quot;nllb200&quot;</span><span class="p">)</span>
+<span class="n">mt</span> <span class="o">=</span> <span class="n">dlt</span><span class="o">.</span><span class="n">TranslationModel</span><span class="p">(</span><span class="s2">&quot;facebook/nllb-200-distilled-600M&quot;</span><span class="p">)</span>
+</code></pre></div></p>
+<p>Note that the language code will change depending on the model family. To find out the correct language codes, please read the doc page on available languages or run <code>mt.available_codes()</code>.</p>
+<p>By default, <code>dlt.TranslationModel</code> will download the model from the huggingface repo for <a href="https://huggingface.co/facebook/mbart-large-50-one-to-many-mmt">mbart50</a>, <a href="https://huggingface.co/facebook/m2m100_418M">m2m100</a>, or <a href="https://huggingface.co/facebook/nllb-200-distilled-600M">nllb200</a> and cache it. It's possible to load the model from a path or a model with a similar format, but you will need to specify the <code>model_family</code>:
+<div class="highlight"><pre><span></span><code><span class="n">mt</span> <span class="o">=</span> <span class="n">dlt</span><span class="o">.</span><span class="n">TranslationModel</span><span class="p">(</span><span class="s2">&quot;/path/to/model/directory/&quot;</span><span class="p">,</span> <span class="n">model_family</span><span class="o">=</span><span class="s2">&quot;mbart50&quot;</span><span class="p">)</span>
+<span class="n">mt</span> <span class="o">=</span> <span class="n">dlt</span><span class="o">.</span><span class="n">TranslationModel</span><span class="p">(</span><span class="s2">&quot;facebook/m2m100_1.2B&quot;</span><span class="p">,</span> <span class="n">model_family</span><span class="o">=</span><span class="s2">&quot;m2m100&quot;</span><span class="p">)</span>
+<span class="n">mt</span> <span class="o">=</span> <span class="n">dlt</span><span class="o">.</span><span class="n">TranslationModel</span><span class="p">(</span><span class="s2">&quot;facebook/nllb-200-distilled-600M&quot;</span><span class="p">,</span> <span class="n">model_family</span><span class="o">=</span><span class="s2">&quot;nllb200&quot;</span><span class="p">)</span>
+</code></pre></div></p>
+<p>Notes:
+* Make sure your tokenizer is also stored in the same directory if you load from a file. 
+* The available languages will change if you select a different model, so you will not be able to leverage <code>dlt.lang</code> or <code>dlt.utils</code>.</p>
+<h3 id="breaking-down-into-sentences">Breaking down into sentences</h3>
+<p>It is not recommended to use extremely long texts as it takes more time to process. Instead, you can try to break them down into sentences. Multiple solutions exists for that, including doing it manually and using the <code>nltk</code> library.</p>
+<p>A quick approach would be to split them by period. However, you have to ensure that there are no periods used for abbreviations (such as <code>Mr.</code> or <code>Dr.</code>). For example, it will work in the following case:
+<div class="highlight"><pre><span></span><code><span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;Mr Smith went to his favorite cafe. There, he met his friend Dr Doe.&quot;</span>
+<span class="n">sents</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
+<span class="s2">&quot;.&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">mt</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">sents</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="n">dlt</span><span class="o">.</span><span class="n">lang</span><span class="o">.</span><span class="n">ENGLISH</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="n">dlt</span><span class="o">.</span><span class="n">lang</span><span class="o">.</span><span class="n">FRENCH</span><span class="p">))</span>
+</code></pre></div></p>
+<p>For more complex cases (e.g. where you use periods for abbreviations), you can use <code>nltk</code>. First install the library with <code>pip install nltk</code>, then run:
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">nltk</span>
+
+<span class="n">nltk</span><span class="o">.</span><span class="n">download</span><span class="p">(</span><span class="s2">&quot;punkt&quot;</span><span class="p">)</span>
+
+<span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;Mr. Smith went to his favorite cafe. There, he met his friend Dr. Doe.&quot;</span>
+<span class="n">sents</span> <span class="o">=</span> <span class="n">nltk</span><span class="o">.</span><span class="n">tokenize</span><span class="o">.</span><span class="n">sent_tokenize</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="s2">&quot;english&quot;</span><span class="p">)</span>  <span class="c1"># don&#39;t use dlt.lang.ENGLISH</span>
+<span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">mt</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">sents</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="n">dlt</span><span class="o">.</span><span class="n">lang</span><span class="o">.</span><span class="n">ENGLISH</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="n">dlt</span><span class="o">.</span><span class="n">lang</span><span class="o">.</span><span class="n">FRENCH</span><span class="p">))</span>
+</code></pre></div></p>
+<h3 id="batch-size-and-verbosity-when-using-translate">Batch size and verbosity when using <code>translate</code></h3>
+<p>It's possible to set a batch size (i.e. the number of elements processed at once) for <code>mt.translate</code> and whether you want to see the progress bar or not:</p>
+<div class="highlight"><pre><span></span><code><span class="o">...</span>
+<span class="n">mt</span> <span class="o">=</span> <span class="n">dlt</span><span class="o">.</span><span class="n">TranslationModel</span><span class="p">()</span>
+<span class="n">mt</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</code></pre></div>
+<p>If you set <code>batch_size=None</code>, it will compute the entire <code>text</code> at once rather than splitting into "chunks". We recommend lowering <code>batch_size</code> if you do not have a lot of RAM or VRAM and run into CUDA memory error. Set a higher value if you are using a high-end GPU and the VRAM is not fully utilized.</p>
+<h3 id="dltutils-module"><code>dlt.utils</code> module</h3>
+<p>An alternative to <code>mt.available_languages()</code> is the <code>dlt.utils</code> module. You can use it to find out which languages and codes are available:</p>
+<div class="highlight"><pre><span></span><code><span class="nb">print</span><span class="p">(</span><span class="n">dlt</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">available_languages</span><span class="p">(</span><span class="s1">&#39;mbart50&#39;</span><span class="p">))</span>  <span class="c1"># All languages that you can use</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">dlt</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">available_codes</span><span class="p">(</span><span class="s1">&#39;mbart50&#39;</span><span class="p">))</span>  <span class="c1"># Code corresponding to each language accepted</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">dlt</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">get_lang_code_map</span><span class="p">(</span><span class="s1">&#39;mbart50&#39;</span><span class="p">))</span>  <span class="c1"># Dictionary of lang -&gt; code</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">dlt</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">available_languages</span><span class="p">(</span><span class="s1">&#39;m2m100&#39;</span><span class="p">))</span>  <span class="c1"># write the name of the model family</span>
+</code></pre></div>
+<p>At the moment, the following models are accepted:
+- <code>"mbart50"</code>
+- <code>"m2m100"</code>
+- <code>"nllb200"</code></p>
+<h3 id="offline-usage">Offline usage</h3>
+<p>Unlike the Google translate or MSFT Translator APIs, this library can be fully used offline. However, you will need to first download the packages and models, and move them to your offline environment to be installed and loaded inside a venv.</p>
+<p>First, run in your terminal:
+<div class="highlight"><pre><span></span><code>mkdir<span class="w"> </span>dlt
+<span class="nb">cd</span><span class="w"> </span>dlt
+mkdir<span class="w"> </span>libraries
+pip<span class="w"> </span>download<span class="w"> </span>-d<span class="w"> </span>libraries/<span class="w"> </span>dl-translate
+</code></pre></div></p>
+<p>Once all the required packages are downloaded, you will need to use huggingface hub to download the files. Install it with <code>pip install huggingface-hub</code>. Then, run inside Python:
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">shutil</span>
+<span class="kn">import</span> <span class="nn">huggingface_hub</span> <span class="k">as</span> <span class="nn">hub</span>
+
+<span class="n">dirname</span> <span class="o">=</span> <span class="n">hub</span><span class="o">.</span><span class="n">snapshot_download</span><span class="p">(</span><span class="s2">&quot;facebook/m2m100_418M&quot;</span><span class="p">)</span>
+<span class="n">shutil</span><span class="o">.</span><span class="n">copytree</span><span class="p">(</span><span class="n">dirname</span><span class="p">,</span> <span class="s2">&quot;cached_model_m2m100&quot;</span><span class="p">)</span>  <span class="c1"># Copy to a permanent folder</span>
+</code></pre></div></p>
+<p>Now, move everything in the <code>dlt</code> directory to your offline environment. Create a virtual environment and run the following in terminal:
+<div class="highlight"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span>--no-index<span class="w"> </span>--find-links<span class="w"> </span>libraries/<span class="w"> </span>dl-translate
+</code></pre></div></p>
+<p>Now, run inside Python:
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">dl_translate</span> <span class="k">as</span> <span class="nn">dlt</span>
+
+<span class="n">mt</span> <span class="o">=</span> <span class="n">dlt</span><span class="o">.</span><span class="n">TranslationModel</span><span class="p">(</span><span class="s2">&quot;cached_model_m2m100&quot;</span><span class="p">,</span> <span class="n">model_family</span><span class="o">=</span><span class="s2">&quot;m2m100&quot;</span><span class="p">)</span>
+</code></pre></div></p>
+<h2 id="advanced">Advanced</h2>
+<p>The following section assumes you have knowledge of PyTorch and Huggingface Transformers.</p>
+<h3 id="saving-and-loading">Saving and loading</h3>
+<p>If you wish to accelerate the loading time the translation model, you can use <code>save_obj</code>. Later you can reload it with <code>load_obj</code> by specifying the same directory that you are using to save.</p>
+<div class="highlight"><pre><span></span><code><span class="n">mt</span> <span class="o">=</span> <span class="n">dlt</span><span class="o">.</span><span class="n">TranslationModel</span><span class="p">()</span>
+<span class="c1"># ...</span>
+<span class="n">mt</span><span class="o">.</span><span class="n">save_obj</span><span class="p">(</span><span class="s1">&#39;saved_model&#39;</span><span class="p">)</span>
+<span class="c1"># ...</span>
+<span class="n">mt</span> <span class="o">=</span> <span class="n">dlt</span><span class="o">.</span><span class="n">TranslationModel</span><span class="o">.</span><span class="n">load_obj</span><span class="p">(</span><span class="s1">&#39;saved_model&#39;</span><span class="p">)</span>
+</code></pre></div>
+<p><strong>Warning:</strong> Only use this if you are certain the torch module saved in <code>saved_model/weights.pt</code> can be correctly loaded. Indeed, it is possible that the <code>huggingface</code>, <code>torch</code> or some other dependencies change between when you called <code>save_obj</code> and <code>load_obj</code>, and that might break your code. Thus, it is recommend to only run <code>load_obj</code> in the same environment/session as <code>save_obj</code>. <strong>Note this method might be deprecated in the future once there's no speed benefit in loading this way.</strong></p>
+<h3 id="interacting-with-underlying-model-and-tokenizer">Interacting with underlying model and tokenizer</h3>
+<p>When initializing <code>model</code>, you can pass in arguments for the underlying BART model and tokenizer (which will respectively be passed to <code>ModelForConditionalGeneration.from_pretrained</code> and <code>TokenizerFast.from_pretrained</code>):</p>
+<div class="highlight"><pre><span></span><code><span class="n">mt</span> <span class="o">=</span> <span class="n">dlt</span><span class="o">.</span><span class="n">TranslationModel</span><span class="p">(</span>
+    <span class="n">model_options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+        <span class="n">state_dict</span><span class="o">=...</span><span class="p">,</span>
+        <span class="n">cache_dir</span><span class="o">=...</span><span class="p">,</span>
+        <span class="o">...</span>
+    <span class="p">),</span>
+    <span class="n">tokenizer_options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+        <span class="n">tokenizer_file</span><span class="o">=...</span><span class="p">,</span>
+        <span class="n">eos_token</span><span class="o">=...</span><span class="p">,</span>
+        <span class="o">...</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+</code></pre></div>
+<p>You can also access the underlying <code>transformers</code> model and <code>tokenizer</code>:
+<div class="highlight"><pre><span></span><code><span class="n">transformers_model</span> <span class="o">=</span> <span class="n">mt</span><span class="o">.</span><span class="n">get_transformers_model</span><span class="p">()</span>
+<span class="n">tokenizer</span> <span class="o">=</span> <span class="n">mt</span><span class="o">.</span><span class="n">get_tokenizer</span><span class="p">()</span>
+</code></pre></div></p>
+<p>For more information about the models themselves, please read the docs on <a href="https://huggingface.co/transformers/master/model_doc/mbart.html">mBART</a> and <a href="https://huggingface.co/transformers/model_doc/m2m_100.html">m2m100</a>.</p>
+<h3 id="keyword-arguments-for-the-generate-method-of-the-underlying-model">Keyword arguments for the <code>generate()</code> method of the underlying model</h3>
+<p>When running <code>mt.translate</code>, you can also give a <code>generation_options</code> dictionary that is passed as keyword arguments to the underlying <code>mt.get_transformers_model().generate()</code> method:
+<div class="highlight"><pre><span></span><code><span class="n">mt</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span>
+    <span class="n">text</span><span class="p">,</span>
+    <span class="n">source</span><span class="o">=</span><span class="n">dlt</span><span class="o">.</span><span class="n">lang</span><span class="o">.</span><span class="n">GERMAN</span><span class="p">,</span>
+    <span class="n">target</span><span class="o">=</span><span class="n">dlt</span><span class="o">.</span><span class="n">lang</span><span class="o">.</span><span class="n">SPANISH</span><span class="p">,</span>
+    <span class="n">generation_options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">num_beams</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=...</span><span class="p">)</span>
+<span class="p">)</span>
+</code></pre></div></p>
+<p>Learn more in the <a href="https://huggingface.co/transformers/main_classes/model.html#transformers.generation_utils.GenerationMixin.generate">huggingface docs</a>.</p>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": ".", "features": [], "search": "assets/javascripts/workers/search.dfff1995.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="assets/javascripts/bundle.dff1b7c8.min.js"></script>
+      
+    
+  </body>
+</html>
