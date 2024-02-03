@@ -5,7 +5,7 @@
 [![License](https://img.shields.io/badge/license-MIT-green)](https://github.com/xhluca/dl-translate/blob/main/LICENSE)
 
 
-*A deep learning-based translation library built on Huggingface `transformers`*
+*A translation library for 200 languages built on Huggingface `transformers`*
 
 💻 [GitHub Repository](https://github.com/xhluca/dl-translate)<br>
 📚 [Documentation](https://xhluca.github.io/dl-translate)<br>
@@ -32,7 +32,7 @@ text_hi = "संयुक्त राष्ट्र के प्रमुख
 mt.translate(text_hi, source=dlt.lang.HINDI, target=dlt.lang.ENGLISH)
 ```
 
-Above, you can see that `dlt.lang` contains variables representing each of the 50 available languages with auto-complete support. Alternatively, you can specify the language (e.g. "Arabic") or the language code (e.g. "fr" for French):
+Above, you can see that `dlt.lang` contains variables representing each of the 200 available languages with auto-complete support. Alternatively, you can specify the language (e.g. "Arabic") or the language code (e.g. "fr" for French):
 ```python
 text_ar = "الأمين العام للأمم المتحدة يقول إنه لا يوجد حل عسكري في سوريا."
 mt.translate(text_ar, source="Arabic", target="fr")
