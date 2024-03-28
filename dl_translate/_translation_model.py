@@ -179,7 +179,7 @@ class TranslationModel:
 
         tqdm_iterator = data_loader
         if verbose is True:
-            tqdm_iterator = tqdm
+            tqdm_iterator = tqdm(data_loader)
         with torch.no_grad():
             for batch in tqdm_iterator:
                 encoded = self._tokenizer(batch, return_tensors="pt", padding=True)
