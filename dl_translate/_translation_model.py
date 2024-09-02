@@ -170,7 +170,7 @@ class TranslationModel:
             batch_size = len(text)
 
         generation_options.setdefault(
-            "forced_bos_token_id", self._tokenizer.lang_code_to_id[target]
+            "forced_bos_token_id", self._tokenizer.convert_tokens_to_ids(target)
         )
         generation_options.setdefault("max_new_tokens", 512)
 
